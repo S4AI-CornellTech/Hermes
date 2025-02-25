@@ -45,14 +45,33 @@ To set up your development environment:
 
 This evaluation framework leverages several publicly available datasets:
 
-- **SPHERE_899M**: [Explore on Hugging Face](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
-- **SPHERE_100M**: [Explore on Hugging Face](https://huggingface.co/datasets/mohdumar/SPHERE_100M)
-- **SPHERE_100K**: [Explore on Hugging Face](https://huggingface.co/datasets/mohdumar/SPHERE_100K)
+- **SPHERE_899M**: [Explore 899M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
+- **SPHERE_100M**: [Explore 100M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100M)
+- **SPHERE_100K**: [Explore 100K Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100K)
+- **TriviaQA**: [Explore TriviaQA](https://nlp.cs.washington.edu/triviaqa/)
 
 And Several Open Source Models: 
 
-- **GEMMA-2 9B**: [Explore on Hugging Face](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
-- **BGE-Large**: [Explore on Hugging Face](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
+- **GEMMA-2 9B**: [Explore Gemma-2](https://huggingface.co/google/gemma-2-9b)
+- **BGE-Large**: [Explore BGE-Large](https://huggingface.co/BAAI/bge-large-en)
+
+---
+
+## Datastore Creation
+
+### SPHERE Index Creation
+
+- Monolithic Index:
+- Evenly Split Indices:
+- Clustered Hermes Indices:
+
+Create datastroes based on your own datasets is as simple as changing this line of code in the index creation files changed_line```` 
+
+### Synthetic Indices
+
+- Monolithic Index:
+- Evenly Split Indices:
+- Clustered Hermes Indices:
 
 ---
 
@@ -63,6 +82,8 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
 ### Power
 
+---
+
 ## Multi Node Aggregation Tool (Modeling Tool)
 
 <div style="text-align: center;">
@@ -71,6 +92,9 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
   This component focuses on modeling and aggregating data across multiple nodes to enhance system performance and resource utilization. Documentation and usage instructions for the multi-node aggregation tool will be provided here.
 
+### Trace Generator
+
+---
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for full details.
