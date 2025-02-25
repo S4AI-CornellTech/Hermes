@@ -45,15 +45,16 @@ To set up your development environment:
 
 This evaluation framework leverages several publicly available datasets:
 
-- **SPHERE_899M**: [Explore 899M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
-- **SPHERE_100M**: [Explore 100M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100M)
-- **SPHERE_100K**: [Explore 100K Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100K)
+- **SPHERE_899M**: [Explore Bert Encoded 899M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_899M)
+- **SPHERE_100M**: [Explore Bert Encoded 100M Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100M)
+- **SPHERE_100K**: [Explore Bert Encoded 100K Subset of Common Crawl](https://huggingface.co/datasets/mohdumar/SPHERE_100K)
 - **TriviaQA**: [Explore TriviaQA](https://nlp.cs.washington.edu/triviaqa/)
 
 And Several Open Source Models: 
 
 - **GEMMA-2 9B**: [Explore Gemma-2](https://huggingface.co/google/gemma-2-9b)
 - **BGE-Large**: [Explore BGE-Large](https://huggingface.co/BAAI/bge-large-en)
+- **Bert-Base-Uncased**: [Explore bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased)
 
 ---
 
@@ -65,7 +66,7 @@ And Several Open Source Models:
 - Evenly Split Indices:
 - Clustered Hermes Indices:
 
-Create datastroes based on your own datasets is as simple as changing this line of code in the index creation files changed_line```` 
+Create datastroes based on your own datasets is as simple as changing this line of code in the index creation files ```changed_line```. However, you need to tokenize and encode the dataset to cater towards your RAG model.  
 
 ### Synthetic Indices
 
@@ -76,7 +77,7 @@ Create datastroes based on your own datasets is as simple as changing this line 
 ---
 
 ## Hardware Profiling
-This section is dedicated to measuring and profiling the retrieval latency performance of Hermes. Detailed instructions and scripts will be provided to help you analyze and optimize the system's latency.
+This section is dedicated to measuring and profiling the retrieval latency performance of Hermes. Detailed instructions and scripts will be provided to help you analyze and optimize the system's latency. If you don't want to profile your own data please see our profiled power and latency on various models and index sizes on different hardware at this website: [Website]
 
 ### Latency
 
