@@ -1,6 +1,6 @@
 # Hermes
 
-Hermes is a public, open‐source evaluation framework implementation for the methodology described in the paper: **"Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale"**
+Hermes is a public, open‐source evaluation framework implementation for the methodology described in this paper: **"Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale"**
 
 ---
 
@@ -13,7 +13,7 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 
 <img src="images/Hermes.png" alt="Hermes">
 
-Please our full paper [here](https://anonymous.com).
+Please see our full paper [here](https://anonymous.com).
 
 If you use Hermes in your research, please cite us:
 
@@ -38,6 +38,7 @@ To set up your development environment:
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     pip install transformers
+    pip install vllm
     ```
 
 ## Open Source Datasets and Models
@@ -55,14 +56,21 @@ And Several Open Source Models:
 
 ---
 
-## Latency Profiling
+## Hardware Profiling
 This section is dedicated to measuring and profiling the retrieval latency performance of Hermes. Detailed instructions and scripts will be provided to help you analyze and optimize the system's latency.
+
+### Latency
+
+### Power
 
 ## Multi Node Aggregation Tool (Modeling Tool)
 
-<img src="images/MultiNodeAggregation.png" alt="MultiNodeAggregation">
+<div style="text-align: center;">
+  <img src="images/MultiNodeAggregation.png" alt="MultiNodeAggregation">
+</div>
 
-This component focuses on modeling and aggregating data across multiple nodes to enhance system performance and resource utilization. Documentation and usage instructions for the multi-node aggregation tool will be provided here.
+  This component focuses on modeling and aggregating data across multiple nodes to enhance system performance and resource utilization. Documentation and usage instructions for the multi-node aggregation tool will be provided here.
+
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for full details.
