@@ -72,7 +72,7 @@ Create datastroes based on your own datasets is as simple as changing this line 
 
 ### Synthetic Indices
 
-- Monolithic Index:
+- Monolithic Index: ```python index/create_monolithic_synthetic_index.py --index-size 1m --num-workers 32```
 - Evenly Split Indices:
 - Clustered Hermes Indices:
 
