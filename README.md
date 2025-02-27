@@ -2,6 +2,8 @@
 
 Hermes is a public, open‐source evaluation framework implementation for the methodology described in this paper: **"Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale"**
 
+<img src="images/Hermes.png" alt="Hermes" style="width:100%;">
+
 ---
 
 ## Overview
@@ -11,7 +13,7 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 - **10x reduction in latency**
 - **2x improvement in energy efficiency**
 
-<img src="images/Hermes.png" alt="Hermes">
+<img src="images/HermesArchitecture.png" alt="Hermes" style="width:100%;">
 
 Please see our full paper [here](https://anonymous.com).
 
@@ -87,9 +89,7 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
 ## Multi Node Aggregation Tool (Modeling Tool)
 
-<div style="text-align: center;">
-  <img src="images/MultiNodeAggregation.png" alt="MultiNodeAggregation">
-</div>
+<img src="images/MultiNodeAggregation.png" alt="MultiNodeAggregation" style="width:100%;">
 
   This component focuses on modeling and aggregating data across multiple nodes to enhance system performance and resource utilization. Documentation and usage instructions for the multi-node aggregation tool will be provided here.
 
