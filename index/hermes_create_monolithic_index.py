@@ -64,10 +64,13 @@ def main():
         "--dim", type=int, required=True,
         help="Dimensionality of each vector (must match the dataset vector dimension)"
     )
-    # The num-workers argument is retained for compatibility, though not used in this version.
     parser.add_argument(
-        "--num-workers", type=int, default=1,
-        help="Number of parallel worker processes (not used in dataset mode; default: 1)"
+        "--output-dir", type=str, default="index/hermes_indices",
+        help="Directory where the indices will be saved (default: index/hermes_indices/)"
+    )
+    parser.add_argument(
+        "--threads", type=int, default=5,
+        help="Number of FAISS threads to use (default: 5)"
     )
     args = parser.parse_args()
 
@@ -97,7 +100,7 @@ def main():
     index = create_faiss_index_from_dataset(vectors, args.dim)
     
     # Define the index file path.
-    index_filename = f"index/hermes_indices/hermes_index_{index_size}.faiss"
+    index_filename = f"{args.output_dir}/hermes_index_{index_size}.faiss"
     
     # Ensure the output directory exists.
     output_dir = os.path.dirname(index_filename)
