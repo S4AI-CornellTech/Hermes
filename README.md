@@ -65,7 +65,13 @@ And Several Open Source Models:
 
 ### SPHERE Index Creation
 
+Depending on how large of an index you intend to create and the number of cores your machine has access to, indices that make up 1B or 10B vectors can take days or weeks to finish constructing. These indices can also be hundreds of gigabytes in size. 
+
 - Monolithic Index:
+    - ```python index/create_monolithic_hermes_index.py --index-size 100K --dim 768 --num-workers 32```
+        - index-size: How many vectors will make up the search index (100K, 1M, 10M, 100M, 1B, 10B)
+        - dim: Embedding dimension, bert embeddings have a dimension width of 768
+        - num-workers: How many cores used to create the index
 - Evenly Split Indices:
 - Clustered Hermes Indices:
 
@@ -73,8 +79,9 @@ Create datastroes based on your own datasets is as simple as changing this line 
 
 ### Synthetic Indices
 
+Depending on how large of an index you intend to create and the number of cores your machine has access to, indices that make up 1B or 10B vectors can take days or weeks to finish constructing. These indices can also be hundreds of gigabytes in size. 
+
 - Monolithic Index: 
-    - Depending on how large of an index you intend to create and the number of cores your machine has access to, indices that make up 1B or 10B vectors can take days or weeks to finish constructing. These indices can also be hundreds of gigabytes in size. 
     - ```python index/create_monolithic_synthetic_index.py --index-size 1m --dim 768 --num-workers 32```
         - index-size: How many vectors will make up the search index (100K, 1M, 10M, 100M, 1B, 10B)
         - dim: Embedding dimension, bert embeddings have a dimension width of 768
