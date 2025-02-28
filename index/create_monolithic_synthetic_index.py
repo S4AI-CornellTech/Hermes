@@ -125,7 +125,7 @@ def main():
         help="Total number of vectors in the index (e.g., 1k, 1m, 10m, 100m, 1b, 10b)"
     )
     parser.add_argument(
-        "--dim", type=int, default=768,
+        "--dim", type=int, required=True,
         help="Dimensionality of each vector (default: 768)"
     )
     parser.add_argument(
@@ -148,7 +148,7 @@ def main():
     index = create_faiss_index(total_vectors, args.dim, args.num_workers, NUM_VECTORS_PER_BATCH)
     
     # Define the index file path.
-    index_filename = f"index/synthetic_indices/hermes_index_synthetic_monolithic_{args.index_size}.faiss"
+    index_filename = f"index/hermes_indices/hermes_index_synthetic_monolithic_{args.index_size}.faiss"
     
     # Ensure the output directory exists; if not, create it.
     output_dir = os.path.dirname(index_filename)
