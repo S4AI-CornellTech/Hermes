@@ -48,7 +48,7 @@ def create_faiss_index_from_dataset(vectors, dim):
     # --- Adding Dataset Vectors ---
     print("Adding dataset vectors to the FAISS index in batches...")
     for i in tqdm(range(0, total_vectors, NUM_VECTORS_PER_BATCH), desc="Batches Processed", unit="batch"):
-        batch = vectors[i : i + NUM_VECTORS_PER_BATCH]
+        batch = np.array(vectors[i : i + NUM_VECTORS_PER_BATCH])
         index.add(batch)
     return index
 
@@ -61,12 +61,8 @@ def main():
         help="Index size. Allowed values: 100k, 100m, 899m"
     )
     parser.add_argument(
-        "--dim", type=int, required=True,
-        help="Dimensionality of each vector (must match the dataset vector dimension)"
-    )
-    parser.add_argument(
         "--output-dir", type=str, default="index/hermes_indices",
-        help="Directory where the indices will be saved (default: index/hermes_indices/)"
+        help="Directory where the indices will be saved (default: index/hermes_indices)"
     )
     parser.add_argument(
         "--threads", type=int, default=5,
@@ -93,14 +89,14 @@ def main():
     total_vectors = vectors.shape[0]
     print(f"Dataset loaded. Total vectors: {total_vectors}")
     
-    if vectors.shape[1] != args.dim:
-        raise ValueError(f"Provided dimension {args.dim} does not match vector dimension {vectors.shape[1]} in the dataset.")
+    if vectors.shape[1] != 768:
+        raise ValueError(f"Provided dimension {768} does not match vector dimension {vectors.shape[1]} in the dataset.")
     
     # --- Create and Populate the FAISS Index ---
-    index = create_faiss_index_from_dataset(vectors, args.dim)
+    index = create_faiss_index_from_dataset(vectors, 768)
     
     # Define the index file path.
-    index_filename = f"{args.output_dir}/hermes_index_{index_size}.faiss"
+    index_filename = f"{args.output_dir}/hermes_index_monolithic_{index_size}.faiss"
     
     # Ensure the output directory exists.
     output_dir = os.path.dirname(index_filename)

@@ -122,6 +122,10 @@ def main():
         "--output-dir", type=str, default="index/hermes_indices",
         help="Directory where the indices will be saved (default: index/hermes_indices/)"
     )
+    parser.add_argument(
+        "num-indices", type=int, default=10,
+        help="Number of indices to create"
+    )
     parser.add
     args = parser.parse_args()
 

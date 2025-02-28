@@ -79,7 +79,6 @@ def create_faiss_index(total_vectors, dim, num_workers, num_vectors_per_batch):
     index = faiss.IndexIVFScalarQuantizer(
         quantizer, dim, nlists, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
     )
-    # Optionally, set index.nprobe if needed (e.g., index.nprobe = 64)
     
     # --- Index Training ---
     # Set the training size to the square root of the total number of vectors.
@@ -129,8 +128,12 @@ def main():
         help="Dimensionality of each vector (default: 768)"
     )
     parser.add_argument(
-        "--num-workers", type=int, default=200,
-        help="Number of parallel worker processes for vector generation (default: 200)"
+        "--threads", type=int, default=5,
+        help="Number of FAISS threads to use (default: 5)"
+    )
+    parser.add_argument(
+        "--output-dir", type=str, default="index/hermes_indices",
+        help="Directory where the indices will be saved (default: index/hermes_indices)"
     )
     args = parser.parse_args()
     
@@ -142,13 +145,13 @@ def main():
     print(f"  Total vectors       : {total_vectors}")
     print(f"  Vector dimension    : {args.dim}")
     print(f"  Vectors per batch   : {NUM_VECTORS_PER_BATCH}")
-    print(f"  Number of workers   : {args.num_workers}")
+    print(f"  Number of workers   : {args.threads}")
     
     # Create and populate the FAISS index.
-    index = create_faiss_index(total_vectors, args.dim, args.num_workers, NUM_VECTORS_PER_BATCH)
+    index = create_faiss_index(total_vectors, args.dim, args.threads, NUM_VECTORS_PER_BATCH)
     
     # Define the index file path.
-    index_filename = f"index/hermes_indices/hermes_index_synthetic_monolithic_{args.index_size}.faiss"
+    index_filename = f"{args.output_dir}/synthetic_index_monolithic_{args.index_size}.faiss"
     
     # Ensure the output directory exists; if not, create it.
     output_dir = os.path.dirname(index_filename)
