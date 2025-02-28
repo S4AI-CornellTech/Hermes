@@ -69,7 +69,7 @@ Depending on how large of an index you intend to create and the number of cores 
 
 - Monolithic Index:
     - ```python index/create_monolithic_hermes_index.py --index-size 100K --dim 768 --num-workers 32```
-        - index-size: How many vectors will make up the search index (100K, 1M, 10M, 100M, 1B, 10B)
+        - index-size: How many vectors will make up the search index (100K, 100M, 899M)
         - dim: Embedding dimension, bert embeddings have a dimension width of 768
         - num-workers: How many cores used to create the index
 - Evenly Split Indices:
