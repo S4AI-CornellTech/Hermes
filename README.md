@@ -113,3 +113,9 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for full details.
+
+# TODO
+
+Enable dataset streaming as an argument
+
+Check on the training size of clusters and indices...

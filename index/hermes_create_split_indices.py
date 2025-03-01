@@ -19,7 +19,7 @@ DATASET_VALUES = {
     "899m": 899_000_000
 }
 
-def create_faiss_index_for_index(train_vectors, dim):
+def create_faiss_index_for_index(train_vectors, dim, train_size):
     """
     Create and train a FAISS index using the provided training vectors.
     
@@ -32,7 +32,7 @@ def create_faiss_index_for_index(train_vectors, dim):
     """
     quantizer = faiss.IndexFlatIP(dim)
     faiss_index = faiss.IndexIVFScalarQuantizer(
-        quantizer, dim, 8, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
+        quantizer, dim, train_size, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
     )
     faiss_index.own_fields = True
     quantizer.this.disown()
@@ -45,7 +45,7 @@ def create_indices(args):
     dataset_name = DATASET_MAPPING[args.dataset_size]
     index_size = int(DATASET_VALUES[args.dataset_size] / args.num_indices)
     batch_size = int(DATASET_VALUES[args.dataset_size] / 100)
-    train_size = int(math.sqrt(DATASET_VALUES[args.dataset_size]))
+    train_size = int(math.sqrt(index_size))
 
     print(f"Loading dataset '{dataset_name}'...")
     train_dataset = load_dataset(dataset_name, split="train")
@@ -62,7 +62,7 @@ def create_indices(args):
             train_list.append(vec)
         train_lists.append(train_list)
         # Skip the remaining vectors for this index.
-        for _ in range(index_size - train_size):
+        for _ in range(index_size - (train_size)):
             next(train_iter)
 
     # Process each index: build the FAISS index, add vectors in batches, and save.
@@ -71,7 +71,7 @@ def create_indices(args):
         end_idx = (idx + 1) * index_size
 
         # Create and train the FAISS index for this partition.
-        faiss_index = create_faiss_index_for_index(train_lists[idx], 768)
+        faiss_index = create_faiss_index_for_index(train_lists[idx], 768, train_size)
         
         print(f"Trained index {idx} with {len(train_lists[idx])} vectors.")
         
