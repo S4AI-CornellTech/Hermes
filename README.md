@@ -72,7 +72,7 @@ Depending on how large of an index you intend to create and the number of cores 
         - index-size: How many vectors will make up the search index (100K, 100M, 899M)
 - Evenly Split Indices:
     - ```python index/hermes_create_split_indices.py --dataset-size 100k --num-indices 10```
-        - index-size: Dataset size used to create split indices (100K, 100M, 899M)
+        - dataset-size: Dataset size used to create split indices (100K, 100M, 899M)
         - num-indices: How many indices the dataset should be split into 
 - Clustered Hermes Indices:
 
