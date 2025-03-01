@@ -64,10 +64,6 @@ def main():
         "--output-dir", type=str, default="index/hermes_indices",
         help="Directory where the indices will be saved (default: index/hermes_indices)"
     )
-    parser.add_argument(
-        "--threads", type=int, default=5,
-        help="Number of FAISS threads to use (default: 5)"
-    )
     args = parser.parse_args()
 
     index_size = args.index_size.lower()

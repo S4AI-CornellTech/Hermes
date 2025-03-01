@@ -68,11 +68,12 @@ And Several Open Source Models:
 Depending on how large of an index you intend to create and the number of cores your machine has access to, indices that make up 1B or 10B vectors can take days or weeks to finish constructing. These indices can also be hundreds of gigabytes in size. 
 
 - Monolithic Index:
-    - ```python index/hermes_create_monolithic_index.py --index-size 100K --threads 32```
+    - ```python index/hermes_create_monolithic_index.py --index-size 100K```
         - index-size: How many vectors will make up the search index (100K, 100M, 899M)
-        - dim: Embedding dimension, bert embeddings have a dimension width of 768
-        - num-workers: How many cores used to create the index
 - Evenly Split Indices:
+    - ```python index/hermes_create_split_indices.py --dataset-size 100k --num-indices 10```
+        - index-size: Dataset size used to create split indices (100K, 100M, 899M)
+        - num-indices: How many indices the dataset should be split into 
 - Clustered Hermes Indices:
 
 Create datastroes based on your own datasets is as simple as changing this line of code in the index creation files ```changed_line```. However, you need to tokenize and encode the dataset to cater towards your RAG model.  
@@ -85,7 +86,7 @@ Depending on how large of an index you intend to create and the number of cores 
     - ```python index/synthetic_create_monolithic_index.py --index-size 1m --dim 768 --threads 32```
         - index-size: How many vectors will make up the search index (100K, 1M, 10M, 100M, 1B, 10B)
         - dim: Embedding dimension, bert embeddings have a dimension width of 768
-        - num-workers: How many cores used to create the index
+        - threads: How many cores used to create the index
 - Evenly Split Indices:
 - Clustered Hermes Indices:
 
