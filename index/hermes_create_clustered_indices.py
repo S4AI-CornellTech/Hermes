@@ -84,11 +84,12 @@ def build_faiss_index_for_cluster(cluster_id, cluster_vectors, dim, batch_size, 
         print(f"Skipping empty cluster {cluster_id}")
         return
 
-    train_size = int(math.sqrt(len(cluster_vectors)))
+    nlists = int(math.sqrt(len(cluster_vectors)))
+    train_size = len(cluster_vectors) // 10
 
     quantizer = faiss.IndexFlatIP(dim)
     ivf_index = faiss.IndexIVFScalarQuantizer(
-        quantizer, dim, train_size, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
+        quantizer, dim, nlists, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
     )
     ivf_index.own_fields = True
     quantizer.this.disown()
@@ -129,18 +130,18 @@ def main():
     )
     parser.add_argument(
         "--centroids-output", type=str,
-        default="index/hermes_indices/hermes_clusters/kmeans_centroids.npy",
-        help="Path to save KMeans centroids (default: index/hermes_indices/hermes_clusters/kmeans_centroids.npy)"
+        default="index/indices/hermes_clusters/kmeans_centroids.npy",
+        help="Path to save KMeans centroids (default: index/indices/hermes_clusters/kmeans_centroids.npy)"
     )
     parser.add_argument(
         "--cluster-indices-dir", type=str,
-        default="index/hermes_indices/hermes_clusters/cluster_indices",
-        help="Directory to save cluster indices (default: index/hermes_indices/hermes_clusters/cluster_indices)"
+        default="index/indices/hermes_clusters/cluster_indices",
+        help="Directory to save cluster indices (default: index/indices/hermes_clusters/cluster_indices)"
     )
     parser.add_argument(
         "--clusters-output-dir", type=str,
-        default="index/hermes_indices/hermes_clusters/clusters",
-        help="Directory to save FAISS indices for clusters (default: index/hermes_indices/hermes_clusters/clusters)"
+        default="index/indices/hermes_clusters/clusters",
+        help="Directory to save FAISS indices for clusters (default: index/indices/hermes_clusters/clusters)"
     )
     parser.add_argument(
         "--niter", type=int, default=20,

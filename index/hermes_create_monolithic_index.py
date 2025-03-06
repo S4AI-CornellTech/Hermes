@@ -41,7 +41,7 @@ def create_faiss_index_from_dataset(vectors, dim):
     
     # --- Index Training ---
     # Use the first sqrt(total_vectors) vectors from the dataset to train.
-    initial_train_size = int(math.sqrt(total_vectors))
+    initial_train_size = int(total_vectors / 10)
     print(f"Training the FAISS index with {initial_train_size} vectors from the dataset...")
     index.train(vectors[:initial_train_size])
     
@@ -61,8 +61,8 @@ def main():
         help="Index size. Allowed values: 100k, 100m, 899m"
     )
     parser.add_argument(
-        "--output-dir", type=str, default="index/hermes_indices",
-        help="Directory where the indices will be saved (default: index/hermes_indices)"
+        "--output-dir", type=str, default="index/indices/monolithic_indices",
+        help="Directory where the indices will be saved (default: index/indices/monolithic_indices)"
     )
     args = parser.parse_args()
 

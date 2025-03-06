@@ -19,7 +19,7 @@ DATASET_VALUES = {
     "899m": 899_000_000
 }
 
-def create_faiss_index_for_index(train_vectors, dim, train_size):
+def create_faiss_index_for_index(train_vectors, dim, index_size, train_size):
     """
     Create and train a FAISS index using the provided training vectors.
     
@@ -30,9 +30,12 @@ def create_faiss_index_for_index(train_vectors, dim, train_size):
     Returns:
       faiss.IndexIVFScalarQuantizer: The trained FAISS index.
     """
+    
+    nlists = int(np.sqrt(index_size))
+    
     quantizer = faiss.IndexFlatIP(dim)
     faiss_index = faiss.IndexIVFScalarQuantizer(
-        quantizer, dim, train_size, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
+        quantizer, dim, nlists, faiss.ScalarQuantizer.QT_8bit, faiss.METRIC_INNER_PRODUCT
     )
     faiss_index.own_fields = True
     quantizer.this.disown()
@@ -45,7 +48,7 @@ def create_indices(args):
     dataset_name = DATASET_MAPPING[args.dataset_size]
     index_size = int(DATASET_VALUES[args.dataset_size] / args.num_indices)
     batch_size = int(DATASET_VALUES[args.dataset_size] / 100)
-    train_size = int(math.sqrt(index_size))
+    train_size = int(index_size / 10)
 
     print(f"Loading dataset '{dataset_name}'...")
     train_dataset = load_dataset(dataset_name, split="train")
@@ -71,7 +74,7 @@ def create_indices(args):
         end_idx = (idx + 1) * index_size
 
         # Create and train the FAISS index for this partition.
-        faiss_index = create_faiss_index_for_index(train_lists[idx], 768, train_size)
+        faiss_index = create_faiss_index_for_index(train_lists[idx], 768, index_size, train_size)
         
         print(f"Trained index {idx} with {len(train_lists[idx])} vectors.")
         
@@ -100,8 +103,8 @@ def main():
         help="Dataset to use. Choices: 100k, 100m, 899m"
     )
     parser.add_argument(
-        "--output-dir", type=str, default="index/hermes_indices",
-        help="Directory where the indices will be saved (default: index/hermes_indices/)"
+        "--output-dir", type=str, default="index/indices/split_indices",
+        help="Directory where the indices will be saved (default: index/indices/split_indices)"
     )
     parser.add_argument(
         "--num-indices", type=int, default=10,
