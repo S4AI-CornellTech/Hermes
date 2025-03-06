@@ -61,6 +61,13 @@ And Several Open Source Models:
 
 ---
 
+## Quickstart
+1. [Create Monolithic, Split, and Hermes Cluster Search Indices](#datastore-creation)
+2. [Profile search latencies, recall, and energy of index searches](#retreival)
+3. [Profile latency and energy usage of encoding and inference models](#inference)
+4. [Create a set of cluster access traces that will be used with our multi node aggregation tool](#trace-generator) 
+5. [Use the Multi Node Aggregation Tool to analyze end to end RAG inference latency and energy](#multi-node-aggregation)
+
 ## Datastore Creation
 
 ### SPHERE Index Creation
@@ -107,9 +114,23 @@ Depending on how large of an index you intend to create and the number of cores 
 ## Hardware Profiling
 This section is dedicated to measuring and profiling the retrieval latency performance of Hermes. Detailed instructions and scripts will be provided to help you analyze and optimize the system's latency. If you don't want to profile your own data please see our profiled power and latency on various models and index sizes on different hardware at this website: [Website]
 
-### Latency
+### Encoding
 
-### Power
+#### Latency
+
+#### Power
+
+### Retreival
+
+#### Latency
+
+#### Power
+
+### Inference
+
+#### Latency
+
+#### Power
 
 ---
 
@@ -120,6 +141,8 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
   This component focuses on modeling and aggregating data across multiple nodes to enhance system performance and resource utilization. Documentation and usage instructions for the multi-node aggregation tool will be provided here.
 
 ### Trace Generator
+
+### Multi Node Aggregation
 
 ---
 
