@@ -64,6 +64,10 @@ def main():
         "--output-dir", type=str, default="index/indices/monolithic_indices",
         help="Directory where the indices will be saved (default: index/indices/monolithic_indices)"
     )
+    parser.add_argument(
+        "--dataset-streaming", type=bool, default=False,
+        help="Enable dataset streaming to avoid loading the entire dataset into memory (default: False)"
+    )
     args = parser.parse_args()
 
     index_size = args.index_size.lower()
@@ -74,7 +78,7 @@ def main():
     
     # --- Load the Hugging Face Dataset ---
     print(f"Loading Hugging Face dataset: {dataset_name} ...")
-    dataset = load_dataset(dataset_name, split="train")
+    dataset = load_dataset(dataset_name, split="train", streaming=args.dataset_streaming)
     
     # Check that the dataset contains the expected 'vector' column.
     if "vector" not in dataset.column_names:

@@ -25,7 +25,7 @@ def collect_vectors(args):
     Load the dataset in streaming mode and collect the first `limit` vectors.
     """
     print(f"Loading dataset '{DATASET_MAPPING[args.dataset_size]}'...")
-    dataset = load_dataset(DATASET_MAPPING[args.dataset_size], split="train")
+    dataset = load_dataset(DATASET_MAPPING[args.dataset_size], split="train", streaming=args.dataset_streaming)
     stream_iter = iter(dataset)
     all_vectors = []
     for _ in tqdm(range(DATASET_VALUES[args.dataset_size]), desc="Collecting vectors"):
@@ -146,6 +146,10 @@ def main():
     parser.add_argument(
         "--niter", type=int, default=20,
         help="Number of iterations for KMeans clustering (default: 20)"
+    )
+    parser.add_argument(
+        "--dataset-streaming", type=bool, default=False,
+        help="Enable dataset streaming to avoid loading the entire dataset into memory (default: False)"
     )
     args = parser.parse_args()
 

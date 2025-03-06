@@ -132,8 +132,8 @@ def main():
         help="Number of FAISS threads to use (default: 5)"
     )
     parser.add_argument(
-        "--output-dir", type=str, default="index/hermes_indices",
-        help="Directory where the indices will be saved (default: index/hermes_indices)"
+        "--output-dir", type=str, default="index/indices/synthetic_monolithic_indices",
+        help="Directory where the indices will be saved (default: index/indices/synthetic_monolithic_indices)"
     )
     args = parser.parse_args()
     

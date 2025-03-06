@@ -71,11 +71,13 @@ Depending on how large of an index you intend to create and the number of cores 
     - ```python index/hermes_create_monolithic_index.py --index-size 100K```
         - index-size: How many vectors will make up the search index (100K, 100M, 899M)
         - output-dir: Directory where the indices will be saved (Default: index/indices/monolithic_indices)
+        - dataset-streaming: Enable dataset streaming to avoid loading the entire dataset into memory (default: False)
 - Evenly Split Indices:
     - ```python index/hermes_create_split_indices.py --dataset-size 100k --num-indices 10```
         - dataset-size: Dataset size used to create split indices (100K, 100M, 899M)
         - num-indices: How many indices the dataset should be split into 
         - output-dir: Directory where the indices will be saved (default: index/indices/split_indices) 
+        - dataset-streaming: Enable dataset streaming to avoid loading the entire dataset into memory (default: False)
 - Clustered Hermes Indices:
     - ```python index/hermes_create_clustered_indices.py --dataset-size 100k --num-indices 10```
         - dataset-size: Dataset size used to create clustered indices (100K, 100M, 899M)
@@ -84,6 +86,7 @@ Depending on how large of an index you intend to create and the number of cores 
         - cluster-indices-dir: Directory to save cluster indices (default: index/indices/hermes_clusters/cluster_indices)
         - cluster-output-dir: Directory to save FAISS indices for clusters (default: index/indices/hermes_clusters/clusters)
         - niter: Number of iterations for KMeans clustering (default: 20)
+        - dataset-streaming: Enable dataset streaming to avoid loading the entire dataset into memory (default: False)
 
 Create datastroes based on your own datasets is as simple as changing this line of code in the index creation files ```changed_line```. However, you need to tokenize and encode the dataset to cater towards your RAG model.  
 
@@ -122,7 +125,3 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for full details.
-
-# TODO
-
-Enable dataset streaming as an argument

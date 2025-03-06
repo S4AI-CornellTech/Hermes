@@ -51,8 +51,8 @@ def create_indices(args):
     train_size = int(index_size / 10)
 
     print(f"Loading dataset '{dataset_name}'...")
-    train_dataset = load_dataset(dataset_name, split="train")
-    build_dataset = load_dataset(dataset_name, split="train")
+    train_dataset = load_dataset(dataset_name, split="train", streaming=args.dataset_streaming)
+    build_dataset = load_dataset(dataset_name, split="train", streaming=args.dataset_streaming)
     train_iter = iter(train_dataset)
     build_iter = iter(build_dataset)
 
@@ -109,6 +109,10 @@ def main():
     parser.add_argument(
         "--num-indices", type=int, default=10,
         help="Number of indices to create"
+    )
+    parser.add_argument(
+        "--dataset-streaming", type=bool, default=False,
+        help="Enable dataset streaming to avoid loading the entire dataset into memory (default: False)"
     )
     args = parser.parse_args()
 
