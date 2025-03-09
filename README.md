@@ -121,17 +121,19 @@ This section is dedicated to measuring and profiling the retrieval latency perfo
 
 ### Retreival
 
-- ```python measurements/retrieval_latency.py --index-name index/indices/monolithic_indices/hermes_index_monolithic_100k.faiss --nprobe 128 --batch-size 32 --queries triviaqa/triviaqa_encodings.npy --retrieved-docs 5 --num-threads 32``` 
-    -index-name: Path to the FAISS index file
-    -nprobe: Number of probes to use for the FAISS search
-    -batch-size: Batch size for querying
-    -queries: Path to the NumPy file containing embeddings
-    -retrieved-docs: Number of docs retrieved per query
-    -num-threads: Number of threads to run retrieval
-
 #### Latency
 
+- ```python measurements/retrieval_latency.py --index-name index/indices/monolithic_indices/hermes_index_monolithic_100k.faiss --nprobe 128 --batch-size 32 --queries triviaqa/triviaqa_encodings.npy --retrieved-docs 5 --num-threads 32```
+    - index-name: Path to the FAISS index file
+    - nprobe: Number of probes to use for the FAISS search
+    - batch-size: Batch size for querying
+    - queries: Path to the NumPy file containing embeddings
+    - retrieved-docs: Number of docs retrieved per query
+    - num-threads: Number of threads to run retrieval
+
 #### Power
+
+
 
 ### Inference
 
