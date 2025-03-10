@@ -52,7 +52,21 @@ And Several Open Source Models:
 
 ### Environment
 
-To set up your development environment:
+## Clone Repository:
+
+Hermes uses Git Large File Storage (LFS can be installed [here](https://git-lfs.com/)). To clone the repository and fetch large files:
+
+```bash
+git clone https://github.com/Michaeltshen/Hermes.git
+cd Hermes
+git lfs pull
+```
+
+Alternatively, you can manually download the required files and place them in the respective folders:
+
+- triviaqa_encodings.npy -> triviaqa/
+
+## Set Development Environment:
 
 1. **Create a Conda Environment:**
 
