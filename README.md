@@ -45,8 +45,8 @@ Hermes leverages publicly available datasets:
 
 1. **[Environment Setup](#setup)**
 2. **[Create Monolithic, Split, and Hermes Cluster Search Indices](#datastore-creation)**
-3. **[Profile Search Latencies, Recall, and Energy](#retrieval)**
-4. **[Profile Latency and Energy of Encoding & Inference](#inference)**
+3. **[Profile Search Latencies, Recall, and Energy](#retrieval-profiling)**
+4. **[Profile Latency and Energy of Encoding & Inference](#encoding--inference-profiling)**
 5. **[Generate Cluster Access Traces](#trace-generator)**
 6. **[Run Multi-Node Aggregation Analysis](#multi-node-aggregation)**
 
@@ -147,11 +147,11 @@ python measurements/encoding_latency.py \
     --input-lengths 4 8 16 32 64 128 256 512 1024 2048 \
 
 python measurements/inference_latency.py \
-    --model_name "google/gemma-2-9b" \
-    --num_gpus 1 \
-    --batch_size 32 \
-    --input_lengths 32 64 128 256 512 \
-    --output_lengths 4 32 256 \
+    --model-name "google/gemma-2-9b" \
+    --num-gpus 1 \
+    --batch-size 32 \
+    --input-lengths 32 64 128 256 512 \
+    --output-lengths 4 32 256 \
 ```
 
 ---
@@ -165,6 +165,10 @@ This tool models and aggregates data across multiple nodes for system performanc
 📌 **Includes:**
 - **Trace Generator** – Generate cluster access traces.
 - **Multi-Node Aggregation** – Analyze RAG inference latency and energy usage.
+
+### Trace Generator
+
+### Multi Node Aggregation
 
 ---
 
