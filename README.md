@@ -168,6 +168,11 @@ This tool models and aggregates data across multiple nodes for system performanc
 
 ### Trace Generator
 
+Generate the cluster access traces
+```bash
+python modeling/trace_generator.py
+```
+
 ### Multi Node Aggregation
 
 ---
