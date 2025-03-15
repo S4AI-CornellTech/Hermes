@@ -61,8 +61,8 @@ def main():
         help="Index size. Allowed values: 100k, 100m, 899m"
     )
     parser.add_argument(
-        "--output-dir", type=str, default="../hermes/index/indices/monolithic_indices",
-        help="Directory where the indices will be saved (default: index/indices/monolithic_indices)"
+        "--output-dir", type=str, default="hermes/indices/monolithic_indices",
+        help="Directory where the indices will be saved (default: hermes/indices/monolithic_indices)"
     )
     parser.add_argument(
         "--dataset-streaming", type=bool, default=False,
