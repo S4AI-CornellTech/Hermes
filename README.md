@@ -127,7 +127,7 @@ Measure retrieval latency and energy performance of Hermes.
 
 ### **Retrieval Profiling**
 
-Run retrieval latency tests:
+Retrieval latency tests:
 ```bash
 python measurements/retrieval_latency.py \
     --index-name index/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
@@ -138,6 +138,21 @@ python measurements/retrieval_latency.py \
 ### **Encoding & Inference Profiling**
 
 ⚡ **Measure Latency and Power Usage** for different encoding and inference models.
+
+Encoding and Inference latency tests:
+```bash
+python measurements/encoding_latency.py \
+    --model-name BAAI/bge-large-en \
+    --batch-size 32 \
+    --input-lengths 4 8 16 32 64 128 256 512 1024 2048 \
+
+python measurements/inference_latency.py \
+    --model_name "google/gemma-2-9b" \
+    --num_gpus 1 \
+    --batch_size 32 \
+    --input_lengths 32 64 128 256 512 \
+    --output_lengths 4 32 256 \
+```
 
 ---
 
