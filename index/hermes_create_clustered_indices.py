@@ -130,17 +130,17 @@ def main():
     )
     parser.add_argument(
         "--centroids-output", type=str,
-        default="index/indices/hermes_clusters/kmeans_centroids.npy",
+        default="../hermes/index/indices/hermes_clusters/kmeans_centroids.npy",
         help="Path to save KMeans centroids (default: index/indices/hermes_clusters/kmeans_centroids.npy)"
     )
     parser.add_argument(
         "--cluster-indices-dir", type=str,
-        default="index/indices/hermes_clusters/cluster_indices",
+        default="../hermes/index/indices/hermes_clusters/cluster_indices",
         help="Directory to save cluster indices (default: index/indices/hermes_clusters/cluster_indices)"
     )
     parser.add_argument(
         "--clusters-output-dir", type=str,
-        default="index/indices/hermes_clusters/clusters",
+        default="../hermes/index/indices/hermes_clusters/clusters",
         help="Directory to save FAISS indices for clusters (default: index/indices/hermes_clusters/clusters)"
     )
     parser.add_argument(

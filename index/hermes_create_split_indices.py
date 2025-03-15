@@ -103,7 +103,7 @@ def main():
         help="Dataset to use. Choices: 100k, 100m, 899m"
     )
     parser.add_argument(
-        "--output-dir", type=str, default="index/indices/split_indices",
+        "--output-dir", type=str, default="../hermes/index/indices/split_indices",
         help="Directory where the indices will be saved (default: index/indices/split_indices)"
     )
     parser.add_argument(
