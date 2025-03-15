@@ -71,6 +71,11 @@ def main():
     os.environ["VLLM_ATTENTION_BACKEND"] = "FLASH_ATTN"
     gpu_type = get_gpu_type()
     
+    # Ensure the output directory exists
+    output_dir = os.path.dirname(args.output_file)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
     with open(args.output_file, mode='w', newline='') as file:
         fieldnames = ["Model Name", "GPU Type", "Num GPUs", "Batch Size", "Input Token Length", 
                       "Output Token Length", "Avg Prefill Time (s)", "Avg Decode Time (s)"]
