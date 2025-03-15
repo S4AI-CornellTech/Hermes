@@ -59,12 +59,12 @@ def main():
     Runs inference experiments and logs results to a CSV file.
     """
     parser = argparse.ArgumentParser(description="LLM Inference Benchmarking")
-    parser.add_argument("--model_name", type=str, required=True, help="Model name to evaluate")
-    parser.add_argument("--num_gpus", type=int, required=True, help="Number of GPUs to use")
-    parser.add_argument("--batch_size", type=int, required=True, help="Batch size for inference")
-    parser.add_argument("--input_lengths", type=int, nargs='+', required=True, help="List of input token lengths to test")
-    parser.add_argument("--output_lengths", type=int, nargs='+', required=True, help="List of output token lengths to test")
-    parser.add_argument("--output_file", type=str, required=True, help="CSV file path to store results")
+    parser.add_argument("--model-name", type=str, required=True, help="Model name to evaluate")
+    parser.add_argument("--num-gpus", type=int, required=True, help="Number of GPUs to use")
+    parser.add_argument("--batch-size", type=int, required=True, help="Batch size for inference")
+    parser.add_argument("--input-lengths", type=int, nargs='+', required=True, help="List of input token lengths to test")
+    parser.add_argument("--output-lengths", type=int, nargs='+', required=True, help="List of output token lengths to test")
+    parser.add_argument("--output-dir", type=str, default="hermes/profiling/", help="Directory where the indices will be saved (default: hermes/indices/split_indices)")
     
     args = parser.parse_args()
     
@@ -72,11 +72,12 @@ def main():
     gpu_type = get_gpu_type()
     
     # Ensure the output directory exists
-    output_dir = os.path.dirname(args.output_file)
+    output_dir = os.path.dirname(args.output_dir)
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    with open(args.output_file, mode='w', newline='') as file:
+    output_file = args.output_dir + "inference_latency.csv"
+    with open(output_file, mode='w', newline='') as file:
         fieldnames = ["Model Name", "GPU Type", "Num GPUs", "Batch Size", "Input Token Length", 
                       "Output Token Length", "Avg Prefill Time (s)", "Avg Decode Time (s)"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
