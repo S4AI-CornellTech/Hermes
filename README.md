@@ -2,7 +2,7 @@
 
 Hermes is a public, open-source evaluation framework implementing the methodology described in our paper:
 
-## **"Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale"**
+## **Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale**
 
 <img src="images/Hermes.png" alt="Hermes" style="width:100%;">
 
