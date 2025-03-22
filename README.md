@@ -22,24 +22,22 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 🔗 **If you use Hermes or RAGCAT in your research, please cite us:**  
 ```
 @inproceedings{shenHermes2025,
-author = {Shen, Michael and Umar, Muhammad and Maeng, Kiwan and Suh, G. Edward and Gupta, Udit},
-title = {Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale},
-year = {2025},
-isbn = {},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {},
-doi = {},
-abstract = {The rapid advancement of Large Language Models (LLMs) as well as the constantly expanding amount of data make keeping the latest models constantly up-to-date a challenge. The high computational cost required to constantly retrain models to handle evolving data has led to the development of Retrieval-Augmented Generation (RAG). RAG presents a promising solution that enables LLMs to access and incorporate real-time information from external datastores, thus minimizing the need for retraining to update the information available to an LLM. However, as the RAG datastores used to augment information expand into the range of trillions of tokens, retrieval overheads become significant, impacting latency, throughput, and energy efficiency. To address this, we propose Hermes, an algorithm-systems co-design framework that addresses the unique bottlenecks of large-scale RAG systems. Hermes mitigates retrieval latency by partitioning and distributing datastores across multiple nodes, while also enhancing throughput and energy efficiency through an intelligent hierarchical search that dynamically directs queries to optimized subsets of the datastore. On open-source RAG datastores and models, we demonstrate Hermes optimizes end-to-end latency and energy by up to 10.1× and 1.6×, without sacrificing retrieval quality for at-scale trillion token retrieval datastores},
-booktitle = {Proceedings of the 52nd Annual International Symposium on Computer Architecture},
-pages = {},
-numpages = {},
-keywords = {Retrieval-Augmented Generation, Information Retrieval, Large Language Models, Natural Language Processingg},
-location = {Tokya, Japan},
-series = {ISCA '25}
+    author = {Shen, Michael and Umar, Muhammad and Maeng, Kiwan and Suh, G. Edward and Gupta, Udit},
+    title = {Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale},
+    year = {2025},
+    isbn = {},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {},
+    doi = {},
+    abstract = {The rapid advancement of Large Language Models (LLMs) as well as the constantly expanding amount of data make keeping the latest models constantly up-to-date a challenge. The high computational cost required to constantly retrain models to handle evolving data has led to the development of Retrieval-Augmented Generation (RAG). RAG presents a promising solution that enables LLMs to access and incorporate real-time information from external datastores, thus minimizing the need for retraining to update the information available to an LLM. However, as the RAG datastores used to augment information expand into the range of trillions of tokens, retrieval overheads become significant, impacting latency, throughput, and energy efficiency. To address this, we propose Hermes, an algorithm-systems co-design framework that addresses the unique bottlenecks of large-scale RAG systems. Hermes mitigates retrieval latency by partitioning and distributing datastores across multiple nodes, while also enhancing throughput and energy efficiency through an intelligent hierarchical search that dynamically directs queries to optimized subsets of the datastore. On open-source RAG datastores and models, we demonstrate Hermes optimizes end-to-end latency and energy by up to 10.1× and 1.6×, without sacrificing retrieval quality for at-scale trillion token retrieval datastores},
+    booktitle = {Proceedings of the 52nd Annual International Symposium on Computer Architecture},
+    pages = {},
+    numpages = {},
+    keywords = {Retrieval-Augmented Generation, Information Retrieval, Large Language Models, Natural Language Processingg},
+    location = {Tokya, Japan},
+    series = {ISCA '25}
 }
-
-
 ```
 ---
 
