@@ -65,7 +65,7 @@ git lfs pull
 ```
 
 Alternatively, manually download the required files and place them in the corresponding folders:
-- `triviaqa_encodings.npy` → `triviaqa/`
+- [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
 
 ### Development Environment
 

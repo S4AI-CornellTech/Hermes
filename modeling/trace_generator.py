@@ -33,7 +33,6 @@ def main():
     torch.set_grad_enabled(False)  # Disable gradients for efficiency
     
     num_clusters = 10
-    max_queries = 65_536
     batch_size = 1
     small_nprobe = 8
     small_ndr = 1
@@ -50,10 +49,7 @@ def main():
         writer = csv.writer(csv_file)
         writer.writerow(['Query', 'Ranked Clusters'])
         
-        for query_id, start_idx in enumerate(tqdm(range(0, len(embeddings), batch_size), desc="Processing queries", total=min(len(embeddings) // batch_size, max_queries))):
-            if query_id >= max_queries:
-                break
-            
+        for query_id, start_idx in enumerate(tqdm(range(0, len(embeddings), batch_size), desc="Processing queries")):
             query = embeddings[start_idx:start_idx + batch_size]
             ranked_clusters = rank_clusters(query, cluster_indices, small_nprobe, small_ndr)
             writer.writerow([query_id, ranked_clusters[:10]])
