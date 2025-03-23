@@ -187,7 +187,7 @@ python measurements/inference_latency.py \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
 
-python measurements/inferenec_power.py \
+python measurements/inference_power.py \
     --model-name "google/gemma-2-9b" \
     --num-gpus 1 \
     --batch-size 16 32 \

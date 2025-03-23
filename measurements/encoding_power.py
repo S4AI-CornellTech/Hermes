@@ -80,7 +80,7 @@ def main():
     handle = pynvml.nvmlDeviceGetHandleByIndex(0)
     
     with open(output_file, mode='w', newline='') as file:
-        fieldnames = ["Model Name", "GPU Type", "Batch Size", "Input Token Length", "Avg Power (W)", "Avg Energy (J)"]
+        fieldnames = ["Model Name", "GPU Type", "Batch Size", "Input Token Length", "Avg Power (W)"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         
