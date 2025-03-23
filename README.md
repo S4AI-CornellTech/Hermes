@@ -100,6 +100,7 @@ Hermes leverages publicly available datasets:
 4. **Install Dependencies:**
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
+    conda install -c conda-forge gcc_linux-64 gxx_linux-64
     pip install transformers vllm datasets
     ```
 5. **Torchvision Dependency Corrections:**
@@ -152,10 +153,13 @@ Measure retrieval latency and energy performance of Hermes.
 
 Retrieval latency tests:
 ```bash
-python measurements/retrieval_latency.py \
+python measurements/monolithic_retrieval_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
-    --nprobe 128 --batch-size 32 --queries triviaqa/triviaqa_encodings.npy \
-    --retrieved-docs 5 --num-threads 32
+    --nprobe 128 \
+    --batch-size 16 32 64 \
+    --queries triviaqa/triviaqa_encodings.npy \
+    --retrieved-docs 5 10 \
+    --num-threads 32
 ```
 
 ### **Encoding & Inference Profiling**

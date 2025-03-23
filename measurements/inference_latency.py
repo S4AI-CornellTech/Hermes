@@ -91,7 +91,6 @@ def main():
         llm = LLM(
             model=args.model_name, tensor_parallel_size=args.num_gpus, dtype="float16",
             kv_cache_dtype="auto", gpu_memory_utilization=0.9,
-            max_num_batched_tokens=2048, max_model_len=2048,
             enable_prefix_caching=True, trust_remote_code=True
         )
         tokenizer = AutoTokenizer.from_pretrained(args.model_name)
