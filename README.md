@@ -73,30 +73,38 @@ Hermes leverages publicly available datasets:
 
 ### Clone the Repository
 
-Hermes uses Git Large File Storage (LFS). Install LFS [here](https://git-lfs.com/) and clone the repository:
-
-```bash
-git clone https://github.com/Michaeltshen/Hermes.git
-cd Hermes
-git lfs pull
-```
-
-Alternatively, manually download the required files and place them in the corresponding folders:
-- [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
-
-### Development Environment
-
 1. **Create a Conda Environment:**
     ```bash
     conda create -n hermes python=3.11
     conda activate hermes
     ```
-2. **Install Dependencies:**
+
+2. **Clone Repository:**
+    ```bash
+    git clone https://github.com/Michaeltshen/Hermes.git
+    cd Hermes
+    ```
+
+3. **Pull Large Files With git lfs:**
+
+    Hermes uses Git Large File Storage (LFS). Alternatively, manually download the required files and place them in the corresponding folders:
+
+    ```bash
+    conda install conda-forge::git-lfs
+    git lfs install
+    git lfs pull
+    ```
+
+    Alternative: 
+
+    - [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
+
+4. **Install Dependencies:**
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     pip install transformers vllm datasets
     ```
-3. **Torchvision Dependency Corrections:**
+5. **Torchvision Dependency Corrections:**
 
     If you encounter CUDA version mismatches between PyTorch and torchvision, run the following command to automatically detect and install the correct torchvision version for your setup:
     ```bash
