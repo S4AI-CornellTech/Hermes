@@ -6,6 +6,7 @@ import argparse
 import torch
 from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer
+from tqdm import tqdm
 
 def get_gpu_type():
     """Returns the GPU type based on the available hardware."""
@@ -28,11 +29,13 @@ def generate_random_sequence(tokenizer, length):
 
 def measure_latency(llm, tokenizer, batch_size, input_length, output_length, iterations=30, warmup_runs=5):
     """
-    Measures the average prefill and decode latency for given batch size and token lengths.
+    Measures the average prefill and decode latency for a given batch size and token lengths.
     """
     prefill_times, decode_times = [], []
     
-    for _ in range(iterations):
+    for _ in tqdm(range(iterations),
+                    desc=f"Iterations (batch_size={batch_size}, input_length={input_length}, output_length={output_length})",
+                    leave=False, position=3):
         inputs = [tokenizer.decode(generate_random_sequence(tokenizer, input_length), skip_special_tokens=False)
                   for _ in range(batch_size)]
         
@@ -52,7 +55,9 @@ def measure_latency(llm, tokenizer, batch_size, input_length, output_length, ite
         llm.generate(inputs, sampling_params_decode)
         decode_times.append(time.time() - decode_start)
     
-    return sum(prefill_times) / iterations, sum(decode_times) / iterations
+    avg_prefill = sum(prefill_times) / iterations
+    avg_decode = sum(decode_times) / iterations
+    return avg_prefill, avg_decode
 
 def main():
     """
@@ -61,10 +66,10 @@ def main():
     parser = argparse.ArgumentParser(description="LLM Inference Benchmarking")
     parser.add_argument("--model-name", type=str, required=True, help="Model name to evaluate")
     parser.add_argument("--num-gpus", type=int, required=True, help="Number of GPUs to use")
-    parser.add_argument("--batch-size", type=int, required=True, help="Batch size for inference")
+    parser.add_argument("--batch-sizes", type=int, nargs='+', required=True, help="List of batch sizes for inference")
     parser.add_argument("--input-lengths", type=int, nargs='+', required=True, help="List of input token lengths to test")
     parser.add_argument("--output-lengths", type=int, nargs='+', required=True, help="List of output token lengths to test")
-    parser.add_argument("--output-dir", type=str, default="hermes/profiling/", help="Directory where the indices will be saved (default: hermes/indices/split_indices)")
+    parser.add_argument("--output-dir", type=str, default="data/profiling/", help="Directory where the results will be saved")
     
     args = parser.parse_args()
     
@@ -76,7 +81,7 @@ def main():
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    output_file = args.output_dir + "inference_latency.csv"
+    output_file = os.path.join(args.output_dir, "inference_latency.csv")
     with open(output_file, mode='w', newline='') as file:
         fieldnames = ["Model Name", "GPU Type", "Num GPUs", "Batch Size", "Input Token Length", 
                       "Output Token Length", "Avg Prefill Time (s)", "Avg Decode Time (s)"]
@@ -91,17 +96,21 @@ def main():
         )
         tokenizer = AutoTokenizer.from_pretrained(args.model_name)
         
-        for input_length in args.input_lengths:
-            for output_length in args.output_lengths:
-                avg_prefill, avg_decode = measure_latency(llm, tokenizer, args.batch_size, input_length, output_length)
-                
-                writer.writerow({
-                    "Model Name": args.model_name, "GPU Type": gpu_type, "Num GPUs": args.num_gpus,
-                    "Batch Size": args.batch_size, "Input Token Length": input_length,
-                    "Output Token Length": output_length,
-                    "Avg Prefill Time (s)": avg_prefill,
-                    "Avg Decode Time (s)": avg_decode - avg_prefill  # Isolated decode time
-                })
+        for input_length in tqdm(args.input_lengths, desc="Input Lengths", position=0):
+            for output_length in tqdm(args.output_lengths, desc=f"Output Lengths (input_length={input_length})", position=1, leave=False):
+                for batch_size in tqdm(args.batch_sizes, desc=f"Batch Sizes (input_length={input_length}, output_length={output_length})", position=2, leave=False):
+                    avg_prefill, avg_decode = measure_latency(llm, tokenizer, batch_size, input_length, output_length)
+                    
+                    writer.writerow({
+                        "Model Name": args.model_name,
+                        "GPU Type": gpu_type,
+                        "Num GPUs": args.num_gpus,
+                        "Batch Size": batch_size,
+                        "Input Token Length": input_length,
+                        "Output Token Length": output_length,
+                        "Avg Prefill Time (s)": avg_prefill,
+                        "Avg Decode Time (s)": avg_decode - avg_prefill  # Isolated decode time
+                    })
 
 if __name__ == "__main__":
     main()

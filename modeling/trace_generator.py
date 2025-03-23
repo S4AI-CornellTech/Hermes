@@ -25,14 +25,20 @@ def rank_clusters(query, cluster_indices, small_nprobe, small_ndr):
 
 def main():
     parser = argparse.ArgumentParser(description="Cluster ranking script")
-    parser.add_argument("--cluster-indices-dir", type=str, default='hermes/indices/hermes_clusters/clusters', help="Path to the directory containing FAISS cluster indices")
+    parser.add_argument("--cluster-indices-dir", type=str, default='data/indices/hermes_clusters/clusters', help="Path to the directory containing FAISS cluster indices")
     parser.add_argument("--embeddings-path", type=str, default='triviaqa/triviaqa_encodings.npy', help="Path to the embeddings numpy file")
-    parser.add_argument("--output-folder", type=str, default='hermes', help="Path to save the output CSV file")
+    parser.add_argument("--output-folder", type=str, default='data', help="Path to save the output CSV file")
     args = parser.parse_args()
     
     torch.set_grad_enabled(False)  # Disable gradients for efficiency
     
-    num_clusters = 10
+    # Dynamically determine the number of clusters by counting the FAISS files in the directory
+    cluster_files = [f for f in os.listdir(args.cluster_indices_dir)
+                     if f.startswith('ivf_sq8_cluster_') and f.endswith('.faiss')]
+    num_clusters = len(cluster_files)
+    if num_clusters == 0:
+        raise ValueError("No FAISS index files found in the specified directory.")
+    
     batch_size = 1
     small_nprobe = 8
     small_ndr = 1
@@ -52,7 +58,8 @@ def main():
         for query_id, start_idx in enumerate(tqdm(range(0, len(embeddings), batch_size), desc="Processing queries")):
             query = embeddings[start_idx:start_idx + batch_size]
             ranked_clusters = rank_clusters(query, cluster_indices, small_nprobe, small_ndr)
-            writer.writerow([query_id, ranked_clusters[:10]])
+            # Optionally, if you want to limit the output to a fixed number, you can slice the list (e.g., ranked_clusters[:10])
+            writer.writerow([query_id, ranked_clusters])
     
 if __name__ == "__main__":
     main()
