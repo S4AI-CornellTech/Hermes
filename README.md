@@ -101,7 +101,7 @@ Hermes leverages publicly available datasets:
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     conda install -c conda-forge gcc_linux-64 gxx_linux-64
-    pip install transformers vllm datasets
+    pip install transformers vllm datasets pynvml
     ```
 5. **Torchvision Dependency Corrections:**
 
@@ -175,7 +175,19 @@ python measurements/encoding_latency.py \
     --batch-size 16 32 \
     --input-lengths 16 32 64 128
 
+python measurements/encoding_power.py \
+    --model-name BAAI/bge-large-en \
+    --batch-size 16 32 \
+    --input-lengths 16 32 64 128
+
 python measurements/inference_latency.py \
+    --model-name "google/gemma-2-9b" \
+    --num-gpus 1 \
+    --batch-size 16 32 \
+    --input-lengths 32 128 512 \
+    --output-lengths 4 16 32
+
+python measurements/inferenec_power.py \
     --model-name "google/gemma-2-9b" \
     --num-gpus 1 \
     --batch-size 16 32 \
