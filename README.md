@@ -1,6 +1,6 @@
 # Hermes
 
-Hermes is a public, open-source evaluation framework implementing the methodology described in our paper:
+Hermes is a public, open-source evaluation framework implementing the methodology described in:
 
 ## **Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale**
 
@@ -18,6 +18,7 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 <img src="images/HermesArchitecture.png" alt="Hermes" style="width:100%;">
 
 📖 **Read our full paper:** [here](https://anonymous.com)
+📈 **Explore our profiled inference and retrieval data with RAGCAT:** [here](https://https://s4ai-cornelltech.github.io/ragcat/)
 
 🔗 **If you use Hermes or RAGCAT in your research, please cite us:**  
 ```
@@ -151,15 +152,24 @@ Measure retrieval latency and energy performance of Hermes.
 
 ### **Retrieval Profiling**
 
-Retrieval latency tests:
+Example Retrieval latency tests:
 ```bash
 python measurements/monolithic_retrieval_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --nprobe 128 \
     --batch-size 16 32 64 \
-    --queries triviaqa/triviaqa_encodings.npy \
     --retrieved-docs 5 10 \
-    --num-threads 32
+    --num-threads 32 \
+    --queries triviaqa/triviaqa_encodings.npy 
+
+python measurements/split_retrieval_latency.py \
+    --index-folder data/indices/split_indices \
+    --nprobe 128 \
+    --batch-size 32 64 \
+    --retrieved-docs 10 20 \
+    --num-threads 32 \
+    --dataset-size 1000000 \
+    --queries triviaqa/triviaqa_encodings.npy
 ```
 
 ### **Encoding & Inference Profiling**
@@ -168,7 +178,7 @@ python measurements/monolithic_retrieval_latency.py \
 
 For a comprehensive list of supported inference models, please refer to the [vllm documentation](https://docs.vllm.ai/en/latest/models/supported_models.html)
 
-Encoding and Inference latency tests:
+Example Encoding and Inference latency tests:
 ```bash
 python measurements/encoding_latency.py \
     --model-name BAAI/bge-large-en \

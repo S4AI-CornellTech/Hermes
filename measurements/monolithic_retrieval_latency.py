@@ -22,7 +22,7 @@ def load_faiss_index(index_name, nprobe):
     index.nprobe = nprobe
     return index
 
-def perform_queries(index, retrieved_docs, embeddings, batch_size, max_batches=10000):
+def perform_queries(index, retrieved_docs, embeddings, batch_size, max_batches=1000):
     query_times = []
     
     # Progress bar for the query batches (position=4)
