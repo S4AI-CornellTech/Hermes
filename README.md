@@ -19,7 +19,7 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 
 📖 **Read our full paper:** [here](https://anonymous.com)
 
-📈 **Explore our profiled inference and retrieval data with RAGCAT:** [here](https://https://s4ai-cornelltech.github.io/ragcat/)
+📈 **Explore our profiled inference and retrieval data with RAGCAT:** [here](https://s4ai-cornelltech.github.io/ragcat/)
 
 🔗 **If you use Hermes or RAGCAT in your research, please cite us:**  
 ```
@@ -170,6 +170,14 @@ python measurements/split_retrieval_latency.py \
     --retrieved-docs 10 20 \
     --num-threads 32 \
     --dataset-size 1000000 \
+    --queries triviaqa/triviaqa_encodings.npy
+
+python measurements/cluster_retrieval_latency.py \
+    --index-folder data/indices/hermes_clusters \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 10 20 \
+    --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 ```
 

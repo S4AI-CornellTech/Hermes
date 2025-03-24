@@ -7,7 +7,7 @@ import faiss
 from tqdm import tqdm
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="FAISS Query Benchmark")
+    parser = argparse.ArgumentParser(description="Split Query Benchmark")
     parser.add_argument("--index-folder", type=str, required=True, help="Path to the split FAISS index file")
     parser.add_argument("--nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
     parser.add_argument("--batch-size", type=int, nargs='+', required=True, help="List of batch sizes for querying")
@@ -37,6 +37,9 @@ def perform_queries(split_indices, retrieved_docs, embeddings, batch_size, nprob
         split_indices_docs = []
         split_indices_distances = []
         retrieval_times = []
+
+        batch = embeddings[idx:idx + batch_size]
+        
         for index_num, split_index in tqdm(enumerate(split_indices),
                                            desc="Search Indices",
                                            leave=False,
@@ -44,7 +47,6 @@ def perform_queries(split_indices, retrieved_docs, embeddings, batch_size, nprob
                                            position=5):
             split_index.nprobe = nprobe
             
-            batch = embeddings[idx:idx + batch_size]
             query_start = time.time()
             split_distances, split_docs = split_index.search(batch, retrieved_docs)
             query_end = time.time()
@@ -76,7 +78,7 @@ def main():
     embeddings = np.load(args.queries)
     
     with open(output_file, mode='w', newline='') as file:
-        fieldnames = ["Number of Searched Indices", "nprobe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Retrieval Time (s)", "Avg Aggregation Time (s)"]
+        fieldnames = ["nprobe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Retrieval Time (s)", "Avg Aggregation Time (s)"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         
@@ -84,23 +86,17 @@ def main():
             for batch_size in tqdm(args.batch_size, desc=f"Batch sizes (nprobe={nprobe})", position=1, leave=False):
                 for retrieved_docs in tqdm(args.retrieved_docs, desc=f"Retrieved Docs (nprobe={nprobe}, batch_size={batch_size})", position=2, leave=False):
                     for num_threads in tqdm(args.num_threads, desc=f"Num Threads (nprobe={nprobe}, batch_size={batch_size}, retrieved_docs={retrieved_docs})", position=3, leave=False):
-                        for k in range(1, num_indices + 1):
-                            # for i, split_index in enumerate():
-                            #     split_index.nprobe = nprobe
-                                # Set the FAISS thread count
-                            faiss.omp_set_num_threads(num_threads)
-                                # Measure the average query time for the current combination
-                            avg_query_time, avg_aggregation_time = perform_queries(indices[:k], retrieved_docs, embeddings, batch_size, nprobe, args.dataset_size, num_indices)
-                            writer.writerow({
-                                "Number of Searched Indices": k,
-                                "nprobe": nprobe,
-                                "Batch Size": batch_size,
-                                "Retrieved Docs": retrieved_docs,
-                                "Num Threads": num_threads,
-                                "Avg Retrieval Time (s)": avg_query_time,
-                                "Avg Aggregation Time (s)": avg_aggregation_time
-                            })
-                            file.flush()  # Ensure data is written incrementally
+                        faiss.omp_set_num_threads(num_threads)
+                        avg_query_time, avg_aggregation_time = perform_queries(indices, retrieved_docs, embeddings, batch_size, nprobe, args.dataset_size, num_indices)
+                        writer.writerow({
+                            "nprobe": nprobe,
+                            "Batch Size": batch_size,
+                            "Retrieved Docs": retrieved_docs,
+                            "Num Threads": num_threads,
+                            "Avg Retrieval Time (s)": avg_query_time,
+                            "Avg Aggregation Time (s)": avg_aggregation_time
+                        })
+                        file.flush()  # Ensure data is written incrementally
 
 if __name__ == "__main__":
     main()
