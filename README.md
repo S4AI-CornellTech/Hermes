@@ -235,7 +235,7 @@ Example Usage:
 ```bash
 python modeling/modeling_latency_profiling.py \
     --index-folder data/indices/hermes_clusters \
-    --nprobe 8 \
+    --nprobe 8 128 \
     --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
     --retrieved-docs 5 \
     --num-threads 32 \
@@ -254,11 +254,13 @@ python modeling/trace_generator.py
 
 ```bash
 python modeling/latency_sim.py \
-    --latency-data data/profiling/modeling_latency_profiling.csv \
+    --latency-data data/modeling/modeling_latency_profiling.csv \
     --query-trace data/cluster_trace.csv \
     --retrieved-docs 5 \
-    --batch-size 32 \
-    --num-threads 32
+    --batch-size 32 64 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --num-threads 32 
 ```
 
 ---
