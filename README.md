@@ -155,7 +155,7 @@ Measure retrieval latency and energy performance of Hermes.
 
 Example Retrieval latency tests:
 ```bash
-python measurements/monolithic_retrieval_latency.py \
+python measurements/retrieval_monolithic_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --nprobe 128 \
     --batch-size 16 32 64 \
@@ -163,7 +163,7 @@ python measurements/monolithic_retrieval_latency.py \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy 
 
-python measurements/split_retrieval_latency.py \
+python measurements/retrieval_split_latency.py \
     --index-folder data/indices/split_indices \
     --nprobe 128 \
     --batch-size 32 64 \
@@ -172,7 +172,7 @@ python measurements/split_retrieval_latency.py \
     --dataset-size 1000000 \
     --queries triviaqa/triviaqa_encodings.npy
 
-python measurements/cluster_retrieval_latency.py \
+python measurements/retrieval_hermes_cluster_latency.py \
     --index-folder data/indices/hermes_clusters \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
@@ -214,21 +214,6 @@ python measurements/inference_power.py \
     --output-lengths 4 16 32
 ```
 
-### **Per Cluster Profiling For Modeling**
-
-⚡ **Measure Latency and Power Usage** for individual hermes search index clusters.
-
-Example Usage:
-```bash
-python measurements/modeling_latency_profiling.py \
-    --index-folder data/indices/hermes_clusters \
-    --nprobe 8 \
-    --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
-    --retrieved-docs 5 \
-    --num-threads 32 \
-    --queries triviaqa/triviaqa_encodings.npy
-```
-
 ---
 
 ## Multi Node Aggregation Tool
@@ -238,8 +223,25 @@ python measurements/modeling_latency_profiling.py \
 This tool models and aggregates data across multiple nodes for system performance optimization.
 
 📌 **Includes:**
-- **Trace Generator** – Generate cluster access traces.
-- **Multi-Node Aggregation** – Analyze RAG inference latency and energy usage.
+- **Cluster Profilers** – Profiles the latency and power usage of doing retrieval on each cluster
+- **Trace Generator** – Generate cluster access traces
+- **Multi-Node Aggregation** – Analyze RAG inference latency and energy usage
+
+### **Per Cluster Profiling For Modeling**
+
+⚡ **Measure Latency and Power Usage** for individual hermes search index clusters.
+
+Example Usage:
+```bash
+python modeling/modeling_latency_profiling.py \
+    --index-folder data/indices/hermes_clusters \
+    --nprobe 8 \
+    --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
+    --retrieved-docs 5 \
+    --num-threads 32 \
+    --queries triviaqa/triviaqa_encodings.npy
+```
+
 
 ### Trace Generator
 
@@ -249,6 +251,15 @@ python modeling/trace_generator.py
 ```
 
 ### Multi Node Aggregation
+
+```bash
+python modeling/latency_sim.py \
+    --latency-data data/profiling/modeling_latency_profiling.csv \
+    --query-trace data/cluster_trace.csv \
+    --retrieved-docs 5 \
+    --batch-size 32 \
+    --num-threads 32
+```
 
 ---
 

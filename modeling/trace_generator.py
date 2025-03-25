@@ -60,6 +60,7 @@ def main():
             ranked_clusters = rank_clusters(query, cluster_indices, small_nprobe, small_ndr)
             # Optionally, if you want to limit the output to a fixed number, you can slice the list (e.g., ranked_clusters[:10])
             writer.writerow([query_id, ranked_clusters])
+            csv_file.flush()
     
 if __name__ == "__main__":
     main()
