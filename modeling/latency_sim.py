@@ -91,7 +91,6 @@ def process_benchmark(args):
 
                             # Loop over different numbers of clusters searched.
                             for clusters_searched in tqdm(range(1, num_clusters + 1), desc="Clusters Searched", position=5, leave=False):
-                                # Initialize a counter for clusters (assume clusters 0-9).
                                 cluster_counts = Counter({i: 0 for i in range(num_clusters)})
 
                                 # Process the query trace file.

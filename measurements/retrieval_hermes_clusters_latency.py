@@ -14,7 +14,7 @@ def parse_arguments():
     parser.add_argument("--queries", type=str, required=True, help="Path to the NumPy file containing embeddings")
     parser.add_argument("--retrieved-docs", type=int, nargs='+', required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--num-threads", type=int, nargs='+', required=True, help="List of numbers of threads to run retrieval")
-    parser.add_argument("--output-dir", type=str, default="data/modeling/", help="Directory where the results will be saved")
+    parser.add_argument("--output-dir", type=str, default="data/profiling/", help="Directory where the results will be saved")
     return parser.parse_args()
 
 def load_clustered_indices(indices_dir):
@@ -47,7 +47,7 @@ def main():
     
     # Create the output directory if it doesn't exist and set the output file path.
     os.makedirs(args.output_dir, exist_ok=True)
-    output_file = os.path.join(args.output_dir, "modeling_latency_profiling.csv")
+    output_file = os.path.join(args.output_dir, "hermes_cluster_latency.csv")
     
     # Initially load the index with a dummy nprobe; it will be updated later in the loop.
     indices, num_indices = load_clustered_indices(os.path.join(args.index_folder, "clusters"))
