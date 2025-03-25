@@ -99,7 +99,7 @@ def main():
     embeddings = np.load(args.queries)
     
     with open(output_file, mode='w', newline='') as file:
-        fieldnames = ["Number of Searched Indices", "Sample nProbe", "Deep nProbe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Sample Search Time (s)", "Avg Deep Search Time (s)", "Avg Aggregation Time (s)"]
+        fieldnames = ["Number of Searched Indices", "Sample nprobe", "Deep nprobe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Sample Search Time (s)", "Avg Deep Search Time (s)", "Avg Aggregation Time (s)"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         
@@ -112,8 +112,8 @@ def main():
                             avg_sample_search_time, avg_deep_search_time, avg_aggregation_time = perform_queries(indices, k, retrieved_docs, embeddings, sample_nprobe, deep_nprobe, args.index_folder)
                             writer.writerow({
                                 "Number of Searched Indices": k,
-                                "Sample nProbe": sample_nprobe,
-                                "Deep nProbe": deep_nprobe,
+                                "Sample nprobe": sample_nprobe,
+                                "Deep nprobe": deep_nprobe,
                                 "Retrieved Docs": retrieved_docs,
                                 "Num Threads": num_threads,
                                 "Avg Sample Search Time (s)": avg_sample_search_time,

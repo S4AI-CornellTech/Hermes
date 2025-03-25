@@ -214,6 +214,21 @@ python measurements/inference_power.py \
     --output-lengths 4 16 32
 ```
 
+### **Per Cluster Profiling For Modeling**
+
+⚡ **Measure Latency and Power Usage** for individual hermes search index clusters.
+
+Example Usage:
+```bash
+python measurements/modeling_latency_profiling.py \
+    --index-folder data/indices/hermes_clusters \
+    --nprobe 8 \
+    --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
+    --retrieved-docs 5 \
+    --num-threads 32 \
+    --queries triviaqa/triviaqa_encodings.npy
+```
+
 ---
 
 ## Multi Node Aggregation Tool
