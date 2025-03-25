@@ -155,7 +155,7 @@ Measure retrieval latency and energy performance of Hermes.
 
 Example Retrieval latency tests:
 ```bash
-python measurements/retrieval_monolithic_latency.py \
+python measurements/latency/retrieval_monolithic_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --nprobe 128 \
     --batch-size 16 32 64 \
@@ -163,7 +163,7 @@ python measurements/retrieval_monolithic_latency.py \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy 
 
-python measurements/retrieval_split_latency.py \
+python measurements/latency/retrieval_split_latency.py \
     --index-folder data/indices/split_indices \
     --nprobe 128 \
     --batch-size 32 64 \
@@ -172,7 +172,7 @@ python measurements/retrieval_split_latency.py \
     --dataset-size 1000000 \
     --queries triviaqa/triviaqa_encodings.npy
 
-python modeling/retrieval_hermes_clusters_latency.py \
+python modeling/latency/retrieval_hermes_clusters_latency.py \
     --index-folder data/indices/hermes_clusters \
     --nprobe 8 128 \
     --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
@@ -190,24 +190,24 @@ For a comprehensive list of supported inference models, please refer to the [vll
 
 Example Encoding and Inference latency tests:
 ```bash
-python measurements/encoding_latency.py \
+python measurements/latency/encoding_latency.py \
     --model-name BAAI/bge-large-en \
     --batch-size 16 32 \
     --input-lengths 16 32 64 128
 
-python measurements/encoding_power.py \
+python measurements/power/encoding_power.py \
     --model-name BAAI/bge-large-en \
     --batch-size 16 32 \
     --input-lengths 16 32 64 128
 
-python measurements/inference_latency.py \
+python measurements/latency/inference_latency.py \
     --model-name "google/gemma-2-9b" \
     --num-gpus 1 \
     --batch-size 16 32 \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
 
-python measurements/inference_power.py \
+python measurements/power/inference_power.py \
     --model-name "google/gemma-2-9b" \
     --num-gpus 1 \
     --batch-size 16 32 \
