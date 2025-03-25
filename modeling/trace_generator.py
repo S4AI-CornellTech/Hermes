@@ -27,7 +27,7 @@ def main():
     parser = argparse.ArgumentParser(description="Cluster ranking script")
     parser.add_argument("--cluster-indices-dir", type=str, default='data/indices/hermes_clusters/clusters', help="Path to the directory containing FAISS cluster indices")
     parser.add_argument("--embeddings-path", type=str, default='triviaqa/triviaqa_encodings.npy', help="Path to the embeddings numpy file")
-    parser.add_argument("--output-folder", type=str, default='data', help="Path to save the output CSV file")
+    parser.add_argument("--output-folder", type=str, default='data/modeling', help="Path to save the output CSV file")
     args = parser.parse_args()
     
     torch.set_grad_enabled(False)  # Disable gradients for efficiency

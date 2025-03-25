@@ -8,7 +8,7 @@ def parse_arguments():
     parser.add_argument("--retrieved-docs", type=int, required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--batch-size", type=int, required=True, help="Batch size for querying")
     parser.add_argument("--num-threads", type=int, required=True, help="List of numbers of threads to run retrieval")
-    parser.add_argument("--output-dir", type=str, default="data/profiling/", help="Directory where the results will be saved")
+    parser.add_argument("--output-dir", type=str, default="data/modeling/", help="Directory where the results will be saved")
     return parser.parse_args()
 
 def main():

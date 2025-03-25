@@ -71,7 +71,7 @@ def main():
     
     # Create the output directory if it doesn't exist and set the output file path.
     os.makedirs(args.output_dir, exist_ok=True)
-    output_file = os.path.join(args.output_dir, "split_retrieval_latency.csv")
+    output_file = os.path.join(args.output_dir, "retrieval_split_latency.csv")
     
     # Initially load the index with a dummy nprobe; it will be updated later in the loop.
     indices, num_indices = load_split_indices(args.index_folder)

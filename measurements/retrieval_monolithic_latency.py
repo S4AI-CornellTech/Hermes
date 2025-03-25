@@ -46,7 +46,7 @@ def main():
     
     # Create the output directory if it doesn't exist and set the output file path.
     os.makedirs(args.output_dir, exist_ok=True)
-    output_file = os.path.join(args.output_dir, "monolithic_retrieval_latency.csv")
+    output_file = os.path.join(args.output_dir, "retrieval_monolithic_latency.csv")
     
     # Initially load the index with a dummy nprobe; it will be updated later in the loop.
     index = load_faiss_index(args.index_name, args.nprobe[0])
