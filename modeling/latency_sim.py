@@ -54,9 +54,13 @@ def compute_deep_search_latency(latency_lookup_table, cluster_counts, deep_nprob
     
     deep_latencies = []
     for cluster, count in cluster_counts.items():
-        key = (cluster, count, deep_nprobe, retrieved_docs, num_threads)
-        if key in latency_dict:
-            deep_latencies.append(latency_dict[key])
+        updated_count = count
+        key = (cluster, updated_count, deep_nprobe, retrieved_docs, num_threads)
+        # Loop until the key is found in latency_dict
+        while key not in latency_dict:
+            updated_count += 1
+            key = (cluster, updated_count, deep_nprobe, retrieved_docs, num_threads)
+        deep_latencies.append(latency_dict[key])
 
     return max(deep_latencies) if deep_latencies else None
 
