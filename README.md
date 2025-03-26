@@ -244,7 +244,9 @@ python modeling/latency_sim.py \
 
 ---
 
-## Accuracy Evaluation
+## Evaluation
+
+### Accuracy Evaluation
 
 ```bash
 python measurements/accuracy/evaluate_retrieval_accuracy.py \
@@ -252,13 +254,18 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
     --monolithic-index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --split-index-folder data/indices/split_indices \
     --split-index-size 100000 \
-    --cluster-index-folder data/indices/hermes_clusters \
+    --cluster-index-folder data/indices/hermes_clusters/clusters \
+    --cluster-index-indices-folder data/indices/hermes_clusters/cluster_indices \
     --nprobe 128 \
     --sample-nprobe 8 \
     --retrieved-docs 5 \
     --queries triviaqa/triviaqa_encodings.npy 
 ```
 
+### DVFS Evaluation
+
+```bash
+```
 
 
 ## License
