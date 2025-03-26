@@ -10,12 +10,13 @@ def main(args):
 
     # Load query encodings from file
     query_encodings = np.load(args.queries)
-    print('Query encodings shape:', query_encodings.shape)
+    # print('Query encodings shape:', query_encodings.shape)
 
     # Load FAISS index from file
-    print('Loading index from:', args.index)
+    # print('Loading index from:', args.index)
     index = faiss.read_index(args.index)
-    
+    print('Index Loaded')
+
     # print('Index total vectors:', index.ntotal)
     # num_clusters = index.invlists.nlist
     # print('Number of clusters (nlist):', num_clusters, 'Computed value:', (num_clusters / 4) ** 2)
@@ -25,19 +26,19 @@ def main(args):
     
     # Set nprobe (number of clusters to search)
     index.nprobe = int(args.nprobe)
-    print('nprobe set to:', index.nprobe)
+    # print('nprobe set to:', index.nprobe)
 
     # Run the search multiple times and time each run
     RUNS = 10
     times = []
 
     for run in range(RUNS):
-        print(f'RUN {run}')
+        # print(f'RUN {run}')
         start_time = time.time()
         distances, indices = index.search(query_encodings, k)
         elapsed = time.time() - start_time
         times.append(elapsed)
-        print(f'Elapsed time: {elapsed:.4f} seconds')
+        # print(f'Elapsed time: {elapsed:.4f} seconds')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FAISS Index Search Script")

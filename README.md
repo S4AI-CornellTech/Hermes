@@ -123,15 +123,15 @@ Building large-scale indices (e.g., 1B–10B vectors) can take days or weeks. Th
 
 🔹 **Monolithic Index**
 ```bash
-python index/hermes_create_monolithic_index.py --index-size 100K
+python index/create_monolithic_index.py --index-size 100K
 ```
 🔹 **Evenly Split Indices**
 ```bash
-python index/hermes_create_split_indices.py --dataset-size 100k --num-indices 10
+python index/create_split_indices.py --dataset-size 100k --num-indices 10
 ```
 🔹 **Clustered Hermes Indices**
 ```bash
-python index/hermes_create_clustered_indices.py --dataset-size 100k --num-indices 10
+python index/create_clustered_indices.py --dataset-size 100k --num-indices 10
 ```
 
 📌 **Custom Datasets:** Modify the dataset loading logic in the index creation files.
@@ -238,16 +238,28 @@ python modeling/trace_generator.py
 
 ```bash
 python modeling/latency_sim.py \
-    --latency-data data/modeling/modeling_latency_profiling.csv \
-    --query-trace data/cluster_trace.csv \
-    --retrieved-docs 5 \
-    --batch-size 32 64 \
-    --sample-nprobe 8 \
-    --deep-nprobe 128 \
+    --latency-data data/modeling/modeling_latency_profilinghermes_clusters
     --num-threads 32 
 ```
 
 ---
+
+## Accuracy Evaluation
+
+```bash
+python measurements/accuracy/evaluate_retrieval_accuracy.py \
+    --flat-index data/indices/flat_indices/hermes_index_flat_100k.faiss \
+    --monolithic-index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
+    --split-index-folder data/indices/split_indices \
+    --split-index-size 100000 \
+    --cluster-index-folder data/indices/hermes_clusters \
+    --nprobe 128 \
+    --sample-nprobe 8 \
+    --retrieved-docs 5 \
+    --queries triviaqa/triviaqa_encodings.npy 
+```
+
+
 
 ## License
 This project is licensed under the **MIT License**. See the LICENSE file for full details.

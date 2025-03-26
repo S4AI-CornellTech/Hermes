@@ -16,32 +16,32 @@ ls /sys/bus/event_source/devices/power/events || log "Warning: Unable to list po
 echo "==============================="
 
 # Run perf stat for a 3-second measurement.
-log "Running perf stat for a 3-second measurement..."
-sudo perf stat -e power/energy-pkg/ -e power/energy-ram/ sleep 3
+# log "Running perf stat for a 3-second measurement..."
+# sudo perf stat -e power/energy-pkg/ sleep 3
 
-echo "==============================="
+# echo "==============================="
 
 # Run perf stat for a 1-second measurement.
 log "Running perf stat for a 1-second measurement..."
-sudo perf stat -e power/energy-pkg/ -e power/energy-ram/ sleep 1
+sudo perf stat -e power/energy-pkg/ sleep 1
 
 echo "==============================="
 
 # Run rapl-read with the -s option.
-log "Running rapl-read with the -s option..."
-sudo ./uarch-configure/rapl-read/rapl-read -s
+# log "Running rapl-read with the -s option..."
+# sudo ./uarch-configure/rapl-read/rapl-read -s
 
-echo "==============================="
+# echo "==============================="
 
-# Run rapl-read with the -p option.
-log "Running rapl-read with the -p option..."
-sudo ./uarch-configure/rapl-read/rapl-read -p
+# # Run rapl-read with the -p option.
+# log "Running rapl-read with the -p option..."
+# sudo ./uarch-configure/rapl-read/rapl-read -p
 
-echo "==============================="
+# echo "==============================="
 
-# Run rapl-read with the -m option.
-log "Running rapl-read with the -m option..."
-sudo ./uarch-configure/rapl-read/rapl-read -m
+# # Run rapl-read with the -m option.
+# log "Running rapl-read with the -m option..."
+# sudo ./uarch-configure/rapl-read/rapl-read -m
 
-echo "==============================="
+# echo "==============================="
 log "Completed all power measurement commands."
