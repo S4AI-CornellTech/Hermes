@@ -29,19 +29,19 @@ echo "==============================="
 
 # Run rapl-read with the -s option.
 log "Running rapl-read with the -s option..."
-sudo ./rapl-read -s
+sudo ./uarch-configure/rapl-read/rapl-read -s
 
 echo "==============================="
 
 # Run rapl-read with the -p option.
 log "Running rapl-read with the -p option..."
-sudo ./rapl-read -p
+sudo ./uarch-configure/rapl-read/rapl-read -p
 
 echo "==============================="
 
 # Run rapl-read with the -m option.
 log "Running rapl-read with the -m option..."
-sudo ./rapl-read -m
+sudo ./uarch-configure/rapl-read/rapl-read -m
 
 echo "==============================="
 log "Completed all power measurement commands."

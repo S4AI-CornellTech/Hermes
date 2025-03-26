@@ -24,7 +24,7 @@ def main(args):
     k = 5
     
     # Set nprobe (number of clusters to search)
-    index.nprobe = args.nprobe
+    index.nprobe = int(args.nprobe)
     print('nprobe set to:', index.nprobe)
 
     # Run the search multiple times and time each run
@@ -43,6 +43,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FAISS Index Search Script")
     parser.add_argument("--queries", type=str, help="Path to the numpy file containing query encodings")
     parser.add_argument("--index", type=str, help="Path to the FAISS index file")
-    parser.add_argument("--nprobe", type=str, help="Path to the FAISS index file")
+    parser.add_argument("--nprobe", type=str, help="nprobe value")
     args = parser.parse_args()
     main(args)
