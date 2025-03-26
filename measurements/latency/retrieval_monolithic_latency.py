@@ -53,7 +53,7 @@ def main():
     embeddings = np.load(args.queries)
     
     with open(output_file, mode='w', newline='') as file:
-        fieldnames = ["Index Name", "nprobe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Query Time (s)"]
+        fieldnames = ["Index Name", "nprobe", "Batch Size", "Retrieved Docs", "Num Threads", "Avg Retrieval Time (s)"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         
