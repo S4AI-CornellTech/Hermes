@@ -107,7 +107,7 @@ Hermes leverages publicly available datasets:
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     conda install -c conda-forge gcc_linux-64 gxx_linux-64
-    pip install transformers vllm datasets pynvml
+    pip install transformers vllm datasets pynvml matplotlib
     ```
 
 5. **Torchvision Dependency Corrections:**

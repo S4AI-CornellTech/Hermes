@@ -1,6 +1,2 @@
 Index Name,nprobe,Batch Size,Retrieved Docs,Num Threads,Avg Retrieval Time (s)
-monolithic_100k.faiss,128,32,5,32, 0.004207210912580531
-monolithic_1m.faiss,128,32,5,32,0.006655916934091224
-monolithic_10m.faiss,128,32,5,32,0.030485589835533337
 monolithic_100m.faiss,128,32,5,32,0.27635505683260814
-monolithic_1b.faiss,128,32,5,32,2.42442005683898

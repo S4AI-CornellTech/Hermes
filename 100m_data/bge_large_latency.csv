@@ -1,4 +1,4 @@
-Model Name,GPU Type,Batch Size,Input Token Length,Avg Latency (s)
+Model Name,GPU Type,Input Token Length,Batch Size,Avg Latency (s)
 BAAI/bge-large-en,NVIDIA RTX 6000 Ada Generation,4,32,0.0077620960143675284
 BAAI/bge-large-en,NVIDIA RTX 6000 Ada Generation,8,32,0.008089313306004167
 BAAI/bge-large-en,NVIDIA RTX 6000 Ada Generation,16,32,0.008066552709862888
