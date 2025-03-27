@@ -49,6 +49,9 @@ def main():
     # Load embeddings
     embeddings = np.load(args.embeddings_path)
     
+    # Ensure the output folder exists
+    os.makedirs(args.output_folder, exist_ok=True)
+    
     # Process queries and write results
     output_file = os.path.join(args.output_folder, 'cluster_trace.csv')
     with open(output_file, mode='w', newline='') as csv_file:

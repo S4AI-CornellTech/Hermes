@@ -105,6 +105,7 @@ Hermes leverages publicly available datasets:
     conda install -c conda-forge gcc_linux-64 gxx_linux-64
     pip install transformers vllm datasets pynvml
     ```
+
 5. **Torchvision Dependency Corrections:**
 
     If you encounter CUDA version mismatches between PyTorch and torchvision, run the following command to automatically detect and install the correct torchvision version for your setup:
@@ -133,8 +134,12 @@ python index/create_split_indices.py --dataset-size 100k --num-indices 10
 ```bash
 python index/create_clustered_indices.py --dataset-size 100k --num-indices 10
 ```
+🔹 **Flat Index**
+```bash
+python index/create_flat_index.py --index-size 100k
+```
 
-📌 **Custom Datasets:** Modify the dataset loading logic in the index creation files.
+📌 **Custom Datasets:** Modify the dataset loading logic in the index creation files. However, you must ensure that your dataset comes pre-encoded or modify the script logic to encode each document before adding it to the index. 
 
 ### Synthetic Indices
 
@@ -238,7 +243,12 @@ python modeling/trace_generator.py
 
 ```bash
 python modeling/latency_sim.py \
-    --latency-data data/modeling/modeling_latency_profilinghermes_clusters
+    --latency-data data/profiling/hermes_cluster_latency.csv \
+    --query-trace data/modeling/cluster_trace.csv \
+    --retrieved-docs 5 \
+    --batch-size 32 64 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
     --num-threads 32 
 ```
 
