@@ -290,6 +290,11 @@ python modeling/dvfs_sim.py \
     --num-threads 32 
 ```
 
+### Figures
+
+```bash
+python figures/fig_11_hermes_accuracy_comparison.py --data-file data/accuracy_eval.csv
+
 
 ## License
 This project is licensed under the **MIT License**. See the LICENSE file for full details.
