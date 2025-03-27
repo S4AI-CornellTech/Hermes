@@ -32,3 +32,10 @@ python figures/fig_15_ttft_hermes_latency_comparison.py \
     --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
     --encoding-trace 100m_data/bge_large_latency.csv \
     --inference-trace 100m_data/gemma_2_9b_latency.csv
+
+python figures/fig_20_hermes_diff_hardware_comparison.py \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 5 \
+    --batch-size 32 \
+    --hermes-retrieval-traces 100m_data/hermes_neoverse_n1_100m_modeled_retrieval_latency.csv 100m_data/hermes_gold_6448y_100m_modeled_retrieval_latency.csv 100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv 100m_data/hermes_silver_4316_100m_modeled_retrieval_latency.csv
