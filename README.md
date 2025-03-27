@@ -279,6 +279,15 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
 ### DVFS Evaluation
 
 ```bash
+python modeling/dvfs_sim.py \
+    --latency-frequency-data 100m_data/hermes_platinum_8380_100m_dvfs_latency.csv \
+    --power-frequency-data 100m_data/hermes_platinum_8380_100m_dvfs_power.csv \
+    --query-trace data/modeling/cluster_trace.csv \
+    --retrieved-docs 5 \
+    --batch-size 32 64 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --num-threads 32 
 ```
 
 

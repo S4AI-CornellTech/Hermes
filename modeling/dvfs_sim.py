@@ -1,3 +1,4 @@
+
 import csv
 import argparse
 import ast
@@ -8,8 +9,10 @@ from tqdm import tqdm
 import numpy as np
 
 def parse_arguments():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="Cluster Query Benchmark")
-    parser.add_argument("--latency-data", type=str, required=True, help="Path to the profiled latency data CSV file")
+    parser.add_argument("--latency-frequency-data", type=str, required=True, help="Path to the profiled latency frequency data CSV file")
+    parser.add_argument("--power-frequency-data", type=str, required=True, help="Path to the profiled power frequency data CSV file")
     parser.add_argument("--query-trace", type=str, required=True, help="Path to the cluster trace CSV file")
     parser.add_argument("--sample-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for Hermes sampling search")
     parser.add_argument("--deep-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for Hermes deep search")
@@ -115,3 +118,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
