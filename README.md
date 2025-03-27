@@ -69,6 +69,10 @@ Hermes leverages publicly available datasets:
 5. **[Generate Cluster Access Traces](#trace-generator)**
 6. **[Run Multi-Node Aggregation Analysis](#multi-node-aggregation)**
 
+🚀 Quick Scripts for Automated Building, Profiling, and Data Collection on Hermes:
+- ```build.sh```: Build Flat, Monolithic, Clustered, and Split Retrieval Indices with 100K datastore
+- ```profile.sh```: Profile Latency and Power of 100K Monolithic, Clustered, and Split Retrieval Index Latencies, Also Profiles SOTA Encoder and Inference Model Latency and Power
+
 ---
 
 ## Setup
