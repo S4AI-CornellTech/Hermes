@@ -10,7 +10,6 @@ def main():
     
     # Define required integer arguments
     parser.add_argument("--input-size", type=int, required=True, help="Input size")
-    parser.add_argument("--output-size", type=int, required=True, help="Output size")
     parser.add_argument("--stride-length", type=int, required=True, help="Stride length")
     parser.add_argument("--batch-size", type=int, required=True, help="Batch size")
     parser.add_argument("--sample-nprobe", type=int, required=True, help="Sample nprobe")
@@ -30,7 +29,7 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    encoding_time, prefill_time, decoding_time, monolithic_retrieval_time = 0, 0, 0, 0
+    encoding_time, prefill_time, monolithic_retrieval_time = 0, 0, 0
     with open(args.monolithic_retrieval_trace, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -50,7 +49,6 @@ def main():
                 int(row["Input Token Length"]) == args.input_size and 
                 int(row["Output Token Length"]) == args.stride_length):
                 prefill_time = float(row["Avg Prefill Time (s)"])
-                decoding_time = float(row["Avg Decode Time (s)"])
 
     with open(args.hermes_retrieval_trace, "r") as f:
         reader = csv.DictReader(f)
@@ -62,25 +60,20 @@ def main():
                 int(row["Sample nprobe"]) == args.sample_nprobe):
                 hermes_retrieval_time = float(row["Avg Hermes Retrieval Latency (s)"])
 
-    num_strides = args.output_size // args.stride_length
-    baseline_latency = (encoding_time + prefill_time + decoding_time + monolithic_retrieval_time) * num_strides 
-    piperag = (monolithic_retrieval_time + encoding_time + prefill_time + decoding_time) + \
-              (max(monolithic_retrieval_time, prefill_time + decoding_time) + encoding_time) * (num_strides - 1)
-    ragcache = (monolithic_retrieval_time + encoding_time + decoding_time) * num_strides + prefill_time
-    hermes = (encoding_time + prefill_time + decoding_time + hermes_retrieval_time) * num_strides
-    hermes_w_enhancements = (hermes_retrieval_time + encoding_time + prefill_time + decoding_time) + \
-                            (max(hermes_retrieval_time, decoding_time) + encoding_time) * (num_strides - 1)
+    baseline_latency = (encoding_time + prefill_time + monolithic_retrieval_time)
+    hermes = (encoding_time + prefill_time + hermes_retrieval_time)
+    hermes_w_enhancements = (encoding_time + prefill_time + hermes_retrieval_time)
 
-    bars = [baseline_latency, piperag, ragcache, hermes, hermes_w_enhancements]
-    labels = ["Baseline", "Ragcache", "Piperag", "Hermes", "Hermes/PipeRAG/RAGCache"]
+    bars = [baseline_latency, hermes, hermes_w_enhancements]
+    labels = ["Baseline", "Hermes", "Hermes/PipeRAG/RAGCache"]
 
     # Create the bar plot using the same aesthetic as before
     fig, ax = plt.subplots(figsize=(6, 3))
-    colors = ['#66BB6A', '#BA68C8', '#42A5F5', '#E57373', '#FFCA28']
+    colors = ['#66BB6A', '#E57373', '#FFCA28']
     ax.bar(labels, bars, color=colors, edgecolor="black", width=0.7)
     
     # Set title and labels with custom font sizes and weight
-    ax.set_title("End-to-End Retrieval Latency Comparison", fontsize=8, fontweight='bold')
+    ax.set_title("TTFT Hermes Latency Comparison", fontsize=8, fontweight='bold')
     ax.set_ylabel("Latency (s)", fontsize=7, fontweight='bold')
     ax.set_xticklabels(labels, rotation=360, fontsize=6, fontweight='bold')
     ax.tick_params(axis='x', labelsize=6)
@@ -90,7 +83,7 @@ def main():
     ax.grid(visible=True, linestyle='--', color='gray', which='major', axis='y', zorder=0)
     
     plt.tight_layout()
-    output_path = os.path.join(args.output_dir, "fig_14_end_to_end_hermes_latency_comparison.pdf")
+    output_path = os.path.join(args.output_dir, "fig_15_ttft_hermes_latency_comparison.pdf")
     plt.savefig(output_path)
 
 if __name__ == "__main__":
