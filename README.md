@@ -72,6 +72,10 @@ Hermes leverages publicly available datasets:
 🚀 Quick Scripts for Automated Building, Profiling, and Data Collection on Hermes:
 - ```build.sh```: Build Flat, Monolithic, Clustered, and Split Retrieval Indices with 100K datastore
 - ```profile.sh```: Profile Latency and Power of 100K Monolithic, Clustered, and Split Retrieval Index Latencies, Also Profiles SOTA Encoder and Inference Model Latency and Power
+- ```eval.sh```: Models Hermes Latency and Energy Usage for Retrieval and runs hermes accuracy analysis scripts
+- ```isca_figures.sh```: Using the given data in 100m_data to produce the figures in the isca paper
+
+To generate the figures for the ISCA paper, first run ```build.sh```, then execute ```isca_figures.sh```. The only workflows should only be used if you plan to build, profile, and evaluate your own indices. 
 
 ---
 
@@ -293,11 +297,50 @@ python modeling/dvfs_sim.py \
 ### Figures
 
 ```bash
-python figures/fig_11_hermes_accuracy_comparison.py --data-file data/accuracy_eval.csv
+python figures/fig_11_hermes_accuracy_comparison.py \
+    --data-file data/accuracy_eval.csv
 
-python figures/fig_12_hermes_nprobe_dse_ndcg.py --data-file data/accuracy_eval.csv
+python figures/fig_12_hermes_nprobe_dse_ndcg.py \
+    --data-file data/accuracy_eval.csv
 
-python figures/fig_13_cluster_size_frequency_analysis.py --index-folder data/indices/hermes_clusters/clusters --cluster-access-trace data/modeling/cluster_trace.csv --clusters-searched 5
+python figures/fig_13_cluster_size_frequency_analysis.py \
+    --index-folder data/indices/hermes_clusters/clusters \
+    --cluster-access-trace data/modeling/cluster_trace.csv \
+    --clusters-searched 5
+
+python figures/fig_14_end_to_end_hermes_latency_comparison.py \
+    --input-size 512 \
+    --output-size 128 \
+    --stride-length 16 \
+    --batch-size 32 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 5 \
+    --clusters-searched 4 \
+    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \
+    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \
+    --encoding-trace data/profiling/encoding_latency.csv \
+    --inference-trace data/profiling/inference_latency.csv
+
+python figures/fig_15_ttft_hermes_latency_comparison.py \
+    --input-size 512 \
+    --stride-length 16 \
+    --batch-size 32 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 5 \
+    --clusters-searched 4 \
+    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \
+    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \
+    --encoding-trace data/profiling/encoding_latency.csv \
+    --inference-trace data/profiling/inference_latency.csv
+
+python figures/fig_20_hermes_diff_hardware_comparison.py \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 5 \
+    --batch-size 32 \
+    --hermes-retrieval-traces data/modeling/hermes_retrieval.csv
 ```
 
 ## License
