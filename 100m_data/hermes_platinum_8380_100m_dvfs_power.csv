@@ -1,0 +1,25 @@
+State,Frequency (Khz),Power (W)
+idle,800,285
+idle,1000,304
+idle,1200,327
+idle,1400,348
+idle,1600,366
+idle,1800,385
+idle,2000,405
+idle,2200,437
+idle,2400,461
+idle,2600,491
+idle,2800,516
+idle,3000,554
+busy,800,209
+busy,1000,209
+busy,1200,209
+busy,1400,212
+busy,1600,212
+busy,1800,212
+busy,2000,212
+busy,2200,212
+busy,2400,212
+busy,2600,213
+busy,2800,217
+busy,3000,217

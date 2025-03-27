@@ -28,8 +28,8 @@ max_mhz=$(lscpu | awk '/^CPU max MHz:/ {print $4}')
 min_hz=$(awk "BEGIN {printf \"%d\", $min_mhz * 1000}")
 max_hz=$(awk "BEGIN {printf \"%d\", $max_mhz * 1000}")
 
-min_hz=3400000
-max_hz=3800000
+min_hz=5000000
+max_hz=5400000
 
 log "CPU frequency range: ${min_hz} KHz to ${max_hz} KHz"
 echo "Energy" > data/profiling/measurement.csv
