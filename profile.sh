@@ -54,7 +54,7 @@ python measurements/power/encoding_power.py \
 
 log "Running inference latency measurement..."
 python measurements/latency/inference_latency.py \
-    --model-name "gpt" \
+    --model-name "gpt2" \
     --num-gpus 1 \
     --batch-size 16 32 \
     --input-lengths 32 128 512 \
@@ -62,10 +62,13 @@ python measurements/latency/inference_latency.py \
 
 log "Running inference power measurement..."
 python measurements/power/inference_power.py \
-    --model-name "gpt" \
+    --model-name "gpt2" \
     --num-gpus 1 \
     --batch-size 16 32 \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
+
+log "Running Trace Generator..."
+python modeling/trace_generator.py
 
 log "All measurements completed successfully."

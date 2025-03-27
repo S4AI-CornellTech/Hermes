@@ -295,6 +295,10 @@ python modeling/dvfs_sim.py \
 ```bash
 python figures/fig_11_hermes_accuracy_comparison.py --data-file data/accuracy_eval.csv
 
+python figures/fig_12_hermes_nprobe_dse_ndcg.py --data-file data/accuracy_eval.csv
+
+python figures/fig_13_cluster_size_frequency_analysis.py --index-folder data/indices/hermes_clusters/clusters --cluster-access-trace data/modeling/cluster_trace.csv --clusters-searched 5
+```
 
 ## License
 This project is licensed under the **MIT License**. See the LICENSE file for full details.
