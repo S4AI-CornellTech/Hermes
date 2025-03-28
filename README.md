@@ -64,7 +64,7 @@ Hermes leverages publicly available datasets:
 
 1. **[Environment Setup](#setup)**
 2. **[Create Monolithic, Split, and Hermes Cluster Search Indices](#datastore-creation)**
-3. **[Profile Search Latencies, Recall, and Energy](#retrieval-profiling)**
+3. **[Profile Search Latencies, and Energy](#retrieval-profiling)**
 4. **[Profile Latency and Energy of Encoding & Inference](#encoding--inference-profiling)**
 5. **[Generate Cluster Access Traces](#trace-generator)**
 6. **[Run Multi-Node Aggregation Analysis](#multi-node-aggregation)**
@@ -75,7 +75,16 @@ Hermes leverages publicly available datasets:
 - ```eval.sh```: Models Hermes Latency and Energy Usage for Retrieval and runs hermes accuracy analysis scripts
 - ```isca_figures.sh```: Using the given data in 100m_data to produce the figures in the isca paper
 
-To generate the figures for the ISCA paper, first run ```build.sh```, then execute ```isca_figures.sh```. The other workflows should only be used if you plan to build, profile, and evaluate your own indices. 
+Artifact Evaluation Instructions
+
+To reproduce the figures from our ISCA paper, please follow these steps:
+
+- Setup the Environment
+- Run ```build.sh``` to build some indices for profiling.
+- Execute ```isca_figures.sh``` to generate all paper figures.
+
+The other workflows are intended for users who wish to build, profile, and evaluate their own indices.
+
 
 ---
 
