@@ -260,16 +260,54 @@ python measurements/power/inference_power.py \
 
 ### DVFS Profiling
 
+⚡ Latency Profiling at Different Frequencies
+
 ```bash
 source measurements/dvfs/profile_dvfs_latency.sh \
-  --folder data/indices/hermes_clusters \
-  --queries triviaqa/triviaqa_encodings.npy \
-  --nprobe 128 \
-  --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
-  --retrieved-docs 5 \
-  --num-threads 32
-
+    --folder data/indices/hermes_clusters \
+    --queries triviaqa/triviaqa_encodings.npy \
+    --nprobe 128 \
+    --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
+    --retrieved-docs 5 \
+    --num-threads 32
 ```
+
+⚡ IVF Search at Different Frequencies
+
+Unfortunately, as of  now there are no scripts for automatically measuring the power usage of Cluster search retrieval under different frequencies. So please follow the following steps to curate the list of powers by hand. 
+
+1. Set the System Frequency
+
+    Configure your system’s frequency by running:
+
+    ```bash
+    bash measurements/dvfs/set_frequency.sh 3000000
+    ```
+
+2. Run the Stress Test and Monitor Power Usage: 
+
+    Open two terminal windows and proceed as follows:
+
+    Terminal 1: Stress the System
+    Run the stress script to initiate the IVF search. Wait for the "RUN" print statements to appear before proceeding with power measurements.
+
+    ```bash
+    python measurements/dvfs/stress_ivf.py --index "$index_file" --nprobe "$nProbe" --queries "$queries"
+    ```
+
+    Terminal 2: Monitor Power Consumption
+
+    Monitor the power usage with one of the following commands:
+    - Using ```perf stat```:
+    ```bash
+    sudo perf stat -e power/energy-pkg/ -e power/energy-ram/  sleep 1
+    ```
+    - Using Intel Rapl
+    ```bash
+    sudo ./uarch-configure/rapl-read/rapl-read -s
+    ```
+
+Use ```perf list``` to see a full list of all collectable power metrics with perf stat
 
 ---
 
@@ -421,7 +459,7 @@ python figures/fig_21_hermes_dvfs_analysis.py \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --batch-size 32 \
-    --data-file data/modeling/hermes_retrieval_energy,csv
+    --data-file data/modeling/hermes_retrieval_energy.csv
 ```
 
 ## License
