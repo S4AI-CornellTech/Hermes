@@ -98,7 +98,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
 
 2. **Clone Repository:**
     ```bash
-    git clone https://github.com/Michaeltshen/Hermes.git
+    git clone --recurse-submodules https://github.com/Michaeltshen/Hermes.git
     cd Hermes
     ```
 
