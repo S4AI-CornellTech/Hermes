@@ -120,7 +120,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     conda install -c conda-forge gcc_linux-64 gxx_linux-64
-    pip install transformers vllm datasets pynvml matplotlib
+    pip install transformers vllm datasets pynvml matplotlib pyRAPL
     ```
 
 5. **Torchvision Dependency Corrections:**
@@ -131,6 +131,11 @@ The other workflows are intended for users who wish to build, profile, and evalu
     ```
     This script ensures that torchvision matches your installed PyTorch version and CUDA compatibility, preventing runtime errors.
 
+6. **Make RAPL Files Readable:**
+    ```bash
+    sudo chmod -R a+r /sys/class/powercap/intel-rapl/
+    sudo chmod a+r /sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj
+    ```
 ---
 
 ## Datastore Creation
@@ -210,6 +215,14 @@ python measurements/latency/retrieval_hermes_sample_deep_latency.py \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 
+python measurements/power/retrieval_monolithic_power.py \
+    --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
+    --nprobe 128 \
+    --batch-size 16 32 64 \
+    --retrieved-docs 5 10 \
+    --num-threads 32 \
+    --queries triviaqa/triviaqa_encodings.npy 
+
 ```
 
 ### **Encoding & Inference Profiling**
@@ -244,6 +257,8 @@ python measurements/power/inference_power.py \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
 ```
+
+### DVFS Profiling
 
 ---
 

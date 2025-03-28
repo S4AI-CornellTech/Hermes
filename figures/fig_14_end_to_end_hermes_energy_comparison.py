@@ -97,9 +97,9 @@ def main():
     piperag = (encoding_energy + decoding_energy + monolithic_retrieval_energy + prefill_energy) + \
               (monolithic_retrieval_energy + decoding_energy + prefill_energy) * (num_strides - 1)
     ragcache = (monolithic_retrieval_energy + encoding_energy + decoding_energy) * num_strides + prefill_energy
-    hermes = (encoding_energy + prefill_energy + decoding_energy + hermes_energy - 36) * num_strides
-    hermes_w_enhancements = (encoding_energy + decoding_energy + hermes_energy - 36 + prefill_energy) + \
-                            (encoding_energy + decoding_energy + hermes_energy - 36) * (num_strides - 1)
+    hermes = (encoding_energy + prefill_energy + decoding_energy + hermes_energy) * num_strides
+    hermes_w_enhancements = (encoding_energy + decoding_energy + hermes_energy + prefill_energy) + \
+                            (encoding_energy + decoding_energy + hermes_energy) * (num_strides - 1)
 
     print("Baseline Energy:", baseline_energy)
     print("Hermes Energy:", hermes)

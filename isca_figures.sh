@@ -39,7 +39,7 @@ python figures/fig_14_end_to_end_hermes_energy_comparison.py \
   --input-size 512 \
   --output-size 128 \
   --stride-length 16 \
-  --batch-size 32 \
+  --batch-size 1 \
   --sample-nprobe 8 \
   --deep-nprobe 128 \
   --retrieved-docs 5 \
