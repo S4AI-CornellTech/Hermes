@@ -17,13 +17,18 @@ def main():
     parser.add_argument("--deep-nprobe", type=int, required=True, help="Deep nprobe")
     parser.add_argument("--retrieved-docs", type=int, required=True, help="Number of documents retrieved")
     parser.add_argument("--clusters-searched", type=int, required=True, help="Number of clusters searched")
-
+    
     # Define required file path arguments
     parser.add_argument("--monolithic-retrieval-trace", type=str, required=True, help="Path to the monolithic retrieval latency CSV file")
-    parser.add_argument("--hermes-retrieval-trace", type=str, required=True, help="Path to the Hermes retrieval trace CSV file")
     parser.add_argument("--encoding-trace", type=str, required=True, help="Path to the encoding trace CSV file")
     parser.add_argument("--inference-trace", type=str, required=True, help="Path to the inference trace CSV file")
+
+    parser.add_argument("--monolithic-retrieval-trace-power", type=str, required=True, help="Path to the monolithic retrieval power CSV file")
+    parser.add_argument("--encoding-trace-power", type=str, required=True, help="Path to the encoding power trace CSV file")
+    parser.add_argument("--inference-trace-power", type=str, required=True, help="Path to the inference power trace CSV file")
     
+    parser.add_argument("--hermes-retrieval-trace-energy", type=str, required=True, help="Path to the Hermes retrieval energy trace CSV file")
+
     parser.add_argument("--output-dir", type=str, default="data/figures/", help="Directory to save the figure")
 
     args = parser.parse_args()
@@ -52,7 +57,31 @@ def main():
                 prefill_time = float(row["Avg Prefill Time (s)"])
                 decoding_time = float(row["Avg Decode Time (s)"])
 
-    with open(args.hermes_retrieval_trace, "r") as f:
+
+    encoding_power, prefill_power, decoding_power, monolithic_retrieval_power = 0, 0, 0, 0
+    hermes_energy = 0
+    with open(args.monolithic_retrieval_trace_power, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if int(row["Batch Size"]) == args.batch_size and int(row["nprobe"]) == args.deep_nprobe:
+                monolithic_retrieval_power = float(row["Avg Retrieval Power (W)"])
+
+    with open(args.encoding_trace_power, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if int(row["Batch Size"]) == args.batch_size and int(row["Input Token Length"]) == args.input_size:
+                encoding_power = float(row["Avg Power (W)"])
+    
+    with open(args.inference_trace_power, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (int(row["Batch Size"]) == args.batch_size and 
+                int(row["Input Token Length"]) == args.input_size and 
+                int(row["Output Token Length"]) == args.stride_length):
+                prefill_power = float(row["Avg Prefill Power (W)"])
+                decoding_power = float(row["Avg Decode Power (W)"])
+
+    with open(args.hermes_retrieval_trace_energy, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (int(row["Batch Size"]) == args.batch_size and 
@@ -60,21 +89,22 @@ def main():
                 int(row["Retrieved Docs"]) == args.retrieved_docs and 
                 int(row["Clusters Searched"]) == args.clusters_searched and 
                 int(row["Sample nprobe"]) == args.sample_nprobe):
-                hermes_retrieval_time = float(row["Avg Hermes Retrieval Latency (s)"])
+                hermes_energy = float(row["Avg Hermes Enhanced DVFS Energy (J)"])
 
-    print(monolithic_retrieval_time)
-    print(hermes_retrieval_time)
+
+    encoding_energy = encoding_power * encoding_time
+    prefill_energy = prefill_power * prefill_time
+    decoding_energy = decoding_power * decoding_time
+    monolithic_retrieval_energy = monolithic_retrieval_power * monolithic_retrieval_time
 
     num_strides = args.output_size // args.stride_length
-    baseline_latency = (encoding_time + prefill_time + decoding_time + monolithic_retrieval_time) * num_strides 
-    piperag = (monolithic_retrieval_time + encoding_time + prefill_time + decoding_time) + \
-              (max(monolithic_retrieval_time, prefill_time + decoding_time) + encoding_time) * (num_strides - 1)
-    ragcache = (monolithic_retrieval_time + encoding_time + decoding_time) * num_strides + prefill_time
-    hermes = (encoding_time + prefill_time + decoding_time + hermes_retrieval_time) * num_strides
-    hermes_w_enhancements = (hermes_retrieval_time + encoding_time + prefill_time + decoding_time) + \
-                            (max(hermes_retrieval_time, decoding_time) + encoding_time) * (num_strides - 1)
+    baseline_energy = (encoding_energy + prefill_energy + decoding_energy + monolithic_retrieval_energy) * num_strides 
+    piperag = (encoding_energy + decoding_energy + monolithic_retrieval_energy + prefill_energy) + (monolithic_retrieval_energy + decoding_energy + prefill_energy) * (num_strides - 1)
+    ragcache = (monolithic_retrieval_energy + encoding_energy + decoding_energy) * num_strides + prefill_energy
+    hermes = (encoding_energy + prefill_energy + decoding_energy + hermes_energy) * num_strides
+    hermes_w_enhancements = (encoding_energy + decoding_energy + hermes_energy + prefill_energy) + (encoding_energy + decoding_energy + hermes_energy) * (num_strides - 1)
 
-    bars = [baseline_latency, piperag, ragcache, hermes, hermes_w_enhancements]
+    bars = [baseline_energy, piperag, ragcache, hermes, hermes_w_enhancements]
     labels = ["Baseline", "Ragcache", "Piperag", "Hermes", "Hermes/PipeRAG/RAGCache"]
 
     # Create the bar plot using the same aesthetic as before
@@ -84,7 +114,7 @@ def main():
     
     # Set title and labels with custom font sizes and weight
     ax.set_title("End-to-End Retrieval Latency Comparison", fontsize=8, fontweight='bold')
-    ax.set_ylabel("Latency (s)", fontsize=7, fontweight='bold')
+    ax.set_ylabel("Energy (J)", fontsize=7, fontweight='bold')
     ax.set_xticklabels(labels, rotation=360, fontsize=6, fontweight='bold')
     ax.tick_params(axis='x', labelsize=6)
     ax.tick_params(axis='y', labelsize=6)
@@ -93,7 +123,7 @@ def main():
     ax.grid(visible=True, linestyle='--', color='gray', which='major', axis='y', zorder=0)
     
     plt.tight_layout()
-    output_path = os.path.join(args.output_dir, "fig_14_end_to_end_hermes_latency_comparison.pdf")
+    output_path = os.path.join(args.output_dir, "fig_14_end_to_end_hermes_energy_comparison.pdf")
     plt.savefig(output_path)
 
 if __name__ == "__main__":

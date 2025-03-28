@@ -34,6 +34,23 @@ python figures/fig_14_end_to_end_hermes_latency_comparison.py \
   --encoding-trace 100m_data/bge_large_latency.csv \
   --inference-trace 100m_data/gemma_2_9b_latency.csv
 
+python figures/fig_14_end_to_end_hermes_energy_comparison.py \
+  --input-size 512 \
+  --output-size 128 \
+  --stride-length 16 \
+  --batch-size 32 \
+  --sample-nprobe 8 \
+  --deep-nprobe 128 \
+  --retrieved-docs 5 \
+  --clusters-searched 4 \
+  --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv \
+  --monolithic-retrieval-trace 100m_data/monolithic_retrieval_latency.csv \
+  --encoding-trace 100m_data/bge_large_latency.csv \
+  --inference-trace 100m_data/gemma_2_9b_latency.csv \
+  --monolithic-retrieval-trace-power 100m_data/monolithic_retrieval_power.csv \
+  --encoding-trace-power 100m_data/bge_large_power.csv \
+  --inference-trace-power 100m_data/gemma_2_9b_power.csv
+
 echo "Running Figure 16: TTFT Hermes Latency Comparison"
 python figures/fig_16_ttft_hermes_latency_comparison.py \
   --input-size 512 \
