@@ -136,6 +136,12 @@ The other workflows are intended for users who wish to build, profile, and evalu
     sudo chmod -R a+r /sys/class/powercap/intel-rapl/
     sudo chmod a+r /sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj
     ```
+
+7. **Build Rapl-Read:**
+    ```bash
+    cd uarch-configure/rapl-read
+    make
+    ```
 ---
 
 ## Datastore Creation
