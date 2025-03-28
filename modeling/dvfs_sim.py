@@ -7,6 +7,7 @@ from collections import Counter
 from itertools import product
 from tqdm import tqdm
 import numpy as np
+import pandas as pd
 
 def parse_arguments():
     """Parse command-line arguments."""
@@ -20,7 +21,10 @@ def parse_arguments():
     parser.add_argument("--batch-size", type=int, nargs='+', required=True, help="List of batch sizes for querying")
     parser.add_argument("--num-threads", type=int, nargs='+', required=True, help="Number of Threads")
     parser.add_argument("--output-dir", type=str, default="data/modeling/", help="Directory where the results will be saved")
-    parser.add_argument("--slowed-latency", type=float, required=True, help="Latency to slow enhanced DCFS too")
+    parser.add_argument("--inference-trace", type=str, required=True, help="Path to the inference trace CSV file")
+    parser.add_argument("--input-size", type=int, required=True, help="Input size")
+    parser.add_argument("--stride-length", type=int, required=True, help="Stride length")
+
     return parser.parse_args()
 
 def load_csv_data(file_path):
@@ -52,16 +56,67 @@ def compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retri
         deep_latencies.append(latency_dict[key])
     return max(deep_latencies) if deep_latencies else None, deep_latencies
 
-def get_sampling_energy(latency_data, sampling_latency, all_sampling_latencies, slowed_latency):
-    sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced = 0, 0, 0
-    for sampling_latency in all_sampling_latencies:
-        sampling_energy_base = 
-        print(sampling_latency)
-    return sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced
+def get_sampling_energy(latency_data, power_data, sampling_latency, all_sampling_latencies):
+    unique_frequencies = sorted({int(row["Frequency"]) for row in latency_data})
+
+    busy_max_power_value = power_data[(power_data['State'] == 'busy') & (power_data['Frequency (Khz)'] == unique_frequencies[-1])]['Power (W)'].iloc[0]
+    idle_max_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == unique_frequencies[-1])]['Power (W)'].iloc[0]
+
+    sampling_energy_base = 0
+    for latency in all_sampling_latencies:
+        sampling_energy_base += (latency * busy_max_power_value) + (idle_max_power_value * (sampling_latency - latency))
+
+    return sampling_energy_base
+
+def get_deep_energy(latency_data, power_data, batch_size, nprobe, retrieved_docs, deep_latency, all_deep_latencies, slowed_latency):
+    unique_frequencies = sorted({int(row["Frequency"]) for row in latency_data})
+
+    busy_max_power_value = power_data[(power_data['State'] == 'busy') & (power_data['Frequency (Khz)'] == unique_frequencies[-1])]['Power (W)'].iloc[0]
+    idle_max_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == unique_frequencies[-1])]['Power (W)'].iloc[0]
+
+    deep_energy_base, deep_energy_dvfs, deep_energy_enhanced_dvfs = 0, 0, 0
+    for num, latency in enumerate(all_deep_latencies):
+        energy_val = (latency * busy_max_power_value) + (idle_max_power_value * (deep_latency - latency))
+        deep_energy_dvfs_max = energy_val
+        deep_energy_enhanced_dvfs_max = energy_val
+
+        for frequency in unique_frequencies:   
+            freq_latency = [
+                row for row in latency_data 
+                if int(row['Frequency']) == frequency and 
+                int(row['Batch Size']) == batch_size and 
+                int(row['nprobe']) == nprobe and 
+                int(row['Retrieved Docs']) == retrieved_docs and
+                int(row['Cluster ID']) == num
+            ]
+
+            frequency_latency_value = float(freq_latency[0]["Avg Retrieval Latency (s)"])
+
+            if frequency_latency_value < deep_latency:
+                busy_freq_power_value = power_data[(power_data['State'] == 'busy') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
+                idle_freq_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
+                deep_energy_freq = frequency_latency_value * busy_freq_power_value + (deep_latency - frequency_latency_value) * idle_freq_power_value
+                if deep_energy_freq < deep_energy_dvfs_max:
+                    deep_energy_dvfs_max = deep_energy_freq
+
+            if frequency_latency_value < slowed_latency:
+                busy_freq_power_value = power_data[(power_data['State'] == 'busy') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
+                idle_freq_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
+                deep_energy_enhanced_freq = frequency_latency_value * busy_freq_power_value + (deep_latency - frequency_latency_value) * idle_freq_power_value
+                if deep_energy_enhanced_freq < deep_energy_enhanced_dvfs_max:
+                    deep_energy_enhanced_dvfs_max = deep_energy_enhanced_freq
+
+        deep_energy_base += energy_val
+        deep_energy_dvfs += deep_energy_dvfs_max
+        deep_energy_enhanced_dvfs += deep_energy_enhanced_dvfs_max
+
+    return deep_energy_base, deep_energy_dvfs, deep_energy_enhanced_dvfs
 
 def process_benchmark(args):
     # Load all CSV data into memory
     latency_data = load_csv_data(args.latency_frequency_data)
+    power_data = pd.read_csv(args.power_frequency_data)
+
     queries = load_csv_data(args.query_trace)
     num_clusters = get_num_clusters(latency_data)
     
@@ -72,12 +127,23 @@ def process_benchmark(args):
         for row in latency_data
     }
     
+    with open(args.inference_trace, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (int(row["Batch Size"]) == args.batch_size and 
+                int(row["Input Token Length"]) == args.input_size and 
+                int(row["Output Token Length"]) == args.stride_length):
+                prefill_time = float(row["Avg Prefill Time (s)"])
+                decoding_time = float(row["Avg Decode Time (s)"])
+
+    slowed_latency = prefill_time + decoding_time
+
     # Ensure output directory exists.
     os.makedirs(args.output_dir, exist_ok=True)
     output_file = os.path.join(args.output_dir, 'hermes_retrieval_energy.csv')
     fieldnames = [
         "Sample nprobe", "Deep nprobe", "Batch Size", "Retrieved Docs",
-        "Clusters Searched", "Avg Hermes Retrieval Latency (s)", "Avg Hermes Throughput (QPS)"
+        "Clusters Searched", "Avg Hermes Energy (J)", "Avg Hermes DVFS Energy (J)", "Avg Hermes Enhanced DVFS Energy (J)"
     ]
     
     with open(output_file, "w", newline="") as outfile:
@@ -88,36 +154,42 @@ def process_benchmark(args):
         param_combinations = list(product(args.sample_nprobe, args.deep_nprobe, args.num_threads, args.batch_size, args.retrieved_docs))
         for sample_nprobe, deep_nprobe, num_threads, batch_size, retrieved_docs in tqdm(param_combinations, desc="Parameter Combinations"):
             sampling_latency, all_sampling_latencies = get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs, num_threads)
-            sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced = get_sampling_energy(latency_data, sampling_latency, all_sampling_latencies, args.slowed_latency)
+            sampling_energy_base = get_sampling_energy(latency_data, power_data, sampling_latency, all_sampling_latencies)
+
+            hermes_energy = []
+            hermes_dvfs_energy = []
+            hermes_enhanced_dvfs_energy = []
 
             # Vary the number of clusters searched.
             for clusters_searched in tqdm(range(1, num_clusters + 1), desc="Clusters Searched", leave=False):
-                hermes_latencies = []
                 cluster_counts = Counter()
                 
                 # Process each query from the preloaded trace.
                 for idx, query in tqdm(enumerate(queries), total=len(queries), desc="Query Trace", leave=False):
                     ranked_clusters = ast.literal_eval(query['Ranked Clusters'])
                     # Consider only the top 'clusters_searched' clusters.
-                    cluster_counts.update(ranked_clusters[:clusters_searched])
+                    cluster_counts.update(sorted(ranked_clusters[:clusters_searched]))
                     
                     if idx % batch_size == 0:
+                        sorted_cluster_counts = {k: cluster_counts[k] for k in sorted(cluster_counts)}
                         deep_latency, all_deep_latencies = compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retrieved_docs, num_threads)
-                        if sampling_latency is not None and deep_latency is not None:
-                            hermes_latencies.append(sampling_latency + deep_latency)
+                        deep_energy_base, deep_energy_dvfs, deep_energy_enhanced_dvfs = get_deep_energy(latency_data, power_data, batch_size, deep_nprobe, retrieved_docs, deep_latency, all_deep_latencies, slowed_latency)
                         cluster_counts = Counter()
-                
-                avg_latency = np.mean(hermes_latencies) if hermes_latencies else None
-                throughput = batch_size / avg_latency if avg_latency else None
-                
+
+                    hermes_energy.append(sampling_energy_base + deep_energy_base)
+                    hermes_dvfs_energy.append(sampling_energy_base + deep_energy_dvfs)  
+                    hermes_enhanced_dvfs_energy.append(sampling_energy_base + deep_energy_enhanced_dvfs)
+
+
                 writer.writerow({
                     "Sample nprobe": sample_nprobe,
                     "Deep nprobe": deep_nprobe,
                     "Batch Size": batch_size,
                     "Retrieved Docs": retrieved_docs,
                     "Clusters Searched": clusters_searched,
-                    "Avg Hermes Retrieval Latency (s)": avg_latency,
-                    "Avg Hermes Throughput (QPS)": throughput
+                    "Avg Hermes Energy (J)": np.mean(hermes_energy),
+                    "Avg Hermes DVFS Energy (J)": np.mean(hermes_dvfs_energy),
+                    "Avg Hermes Enhanced DVFS Energy (J)": np.mean(hermes_enhanced_dvfs_energy),
                 })
                 outfile.flush()
 
