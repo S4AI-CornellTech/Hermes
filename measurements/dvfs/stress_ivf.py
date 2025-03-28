@@ -33,12 +33,12 @@ def main(args):
     times = []
 
     for run in range(RUNS):
-        # print(f'RUN {run}')
+        print(f'RUN {run}')
         start_time = time.time()
         distances, indices = index.search(query_encodings, k)
         elapsed = time.time() - start_time
         times.append(elapsed)
-        # print(f'Elapsed time: {elapsed:.4f} seconds')
+        print(f'Elapsed time: {elapsed:.4f} seconds')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FAISS Index Search Script")
