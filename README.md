@@ -81,7 +81,7 @@ To reproduce the figures from our ISCA paper, please follow these steps:
 
 - Setup the Environment
 - Run ```build.sh``` to build some indices for profiling.
-- Execute ```isca_figures.sh``` to generate all paper figures.
+- Execute ```isca_figures.sh``` to generate figures from the paper.
 
 The other workflows are intended for users who wish to build, profile, and evaluate their own indices.
 
