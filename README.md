@@ -284,8 +284,8 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
 
 ```bash
 python modeling/dvfs_sim.py \
-    --latency-frequency-data 100m_data/hermes_platinum_8380_100m_dvfs_latency.csv \
-    --power-frequency-data 100m_data/hermes_platinum_8380_100m_dvfs_power.csv \
+    --latency-frequency-data data/profiling/hermes_frequency_cluster_latency.csv \
+    --power-frequency-data data/profiling/hermes_frequency_cluster_power.csv \
     --query-trace data/modeling/cluster_trace.csv \
     --inference-trace data/profiling/inference_latency.csv \
     --retrieved-docs 5 \
@@ -294,7 +294,7 @@ python modeling/dvfs_sim.py \
     --deep-nprobe 128 \
     --num-threads 32 \
     --input-size 512 \
-    --stride-length 16 \
+    --stride-length 16 
 ```
 
 ### Figures
@@ -344,6 +344,13 @@ python figures/fig_20_hermes_diff_hardware_comparison.py \
     --retrieved-docs 5 \
     --batch-size 32 \
     --hermes-retrieval-traces data/modeling/hermes_retrieval.csv
+
+python figures/fig_21_hermes_dvfs_analysis.py \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 5 \
+    --batch-size 32 \
+    --data-file 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
 ```
 
 ## License

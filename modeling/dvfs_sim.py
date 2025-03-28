@@ -127,6 +127,8 @@ def process_benchmark(args):
         for row in latency_data
     }
     
+    prefill_time = 0
+    decoding_time = 0
     with open(args.inference_trace, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -135,7 +137,7 @@ def process_benchmark(args):
                 int(row["Output Token Length"]) == args.stride_length):
                 prefill_time = float(row["Avg Prefill Time (s)"])
                 decoding_time = float(row["Avg Decode Time (s)"])
-
+                
     slowed_latency = prefill_time + decoding_time
 
     # Ensure output directory exists.

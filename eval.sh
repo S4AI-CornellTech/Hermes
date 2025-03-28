@@ -22,6 +22,18 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
     --queries triviaqa/triviaqa_encodings.npy 
 
 log "Evaluating Hermes Energy Usage with and Without DVFS..."
+python modeling/dvfs_sim.py \
+    --latency-frequency-data data/profiling/hermes_frequency_cluster_latency.csv \
+    --power-frequency-data data/profiling/hermes_frequency_cluster_power.csv \
+    --query-trace data/modeling/cluster_trace.csv \
+    --inference-trace data/profiling/inference_latency.csv \
+    --retrieved-docs 5 \
+    --batch-size 32 \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --num-threads 32 \
+    --input-size 512 \
+    --stride-length 16 
 
 log "Finished Evaluation."
 

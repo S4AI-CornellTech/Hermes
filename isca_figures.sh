@@ -56,4 +56,12 @@ python figures/fig_20_hermes_diff_hardware_comparison.py \
   100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
   100m_data/hermes_silver_4316_100m_modeled_retrieval_latency.csv
 
+echo "Running Figure 21: Hermes DVFS Energy Analysis"
+python figures/fig_21_hermes_dvfs_analysis.py \
+  --sample-nprobe 8 \
+  --deep-nprobe 128 \
+  --retrieved-docs 5 \
+  --batch-size 32 \
+  --data-file 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
+
 echo "All figures generated successfully."
