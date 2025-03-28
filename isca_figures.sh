@@ -37,7 +37,7 @@ python figures/fig_14_end_to_end_hermes_latency_comparison.py \
 python figures/fig_14_end_to_end_hermes_energy_comparison.py \
   --input-size 512 \
   --output-size 128 \
-  --stride-length 16 \
+  --stride-length 32 \
   --batch-size 32 \
   --sample-nprobe 8 \
   --deep-nprobe 128 \
@@ -54,7 +54,7 @@ python figures/fig_14_end_to_end_hermes_energy_comparison.py \
 echo "Running Figure 16: TTFT Hermes Latency Comparison"
 python figures/fig_16_ttft_hermes_latency_comparison.py \
   --input-size 512 \
-  --stride-length 16 \
+  --stride-length 32 \
   --batch-size 32 \
   --sample-nprobe 8 \
   --deep-nprobe 128 \

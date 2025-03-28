@@ -127,18 +127,6 @@ def process_benchmark(args):
         for row in latency_data
     }
     
-    prefill_time = 0
-    decoding_time = 0
-    with open(args.inference_trace, "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if (int(row["Batch Size"]) == args.batch_size and 
-                int(row["Input Token Length"]) == args.input_size and 
-                int(row["Output Token Length"]) == args.stride_length):
-                prefill_time = float(row["Avg Prefill Time (s)"])
-                decoding_time = float(row["Avg Decode Time (s)"])
-                
-    slowed_latency = prefill_time + decoding_time
 
     # Ensure output directory exists.
     os.makedirs(args.output_dir, exist_ok=True)
@@ -157,6 +145,19 @@ def process_benchmark(args):
         for sample_nprobe, deep_nprobe, num_threads, batch_size, retrieved_docs in tqdm(param_combinations, desc="Parameter Combinations"):
             sampling_latency, all_sampling_latencies = get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs, num_threads)
             sampling_energy_base = get_sampling_energy(latency_data, power_data, sampling_latency, all_sampling_latencies)
+
+            prefill_time = 0
+            decoding_time = 0
+            with open(args.inference_trace, "r") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if (int(row["Batch Size"]) == batch_size and 
+                        int(row["Input Token Length"]) == args.input_size and 
+                        int(row["Output Token Length"]) == args.stride_length):
+                        prefill_time = float(row["Avg Prefill Time (s)"])
+                        decoding_time = float(row["Avg Decode Time (s)"])
+                        
+            slowed_latency = prefill_time + decoding_time
 
             hermes_energy = []
             hermes_dvfs_energy = []
