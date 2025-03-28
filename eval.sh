@@ -1,3 +1,7 @@
+log() {
+  echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
 log "Running Hermes Multi Node Aggregation Tool..."
 python modeling/latency_sim.py \
     --latency-data data/profiling/hermes_cluster_latency.csv \

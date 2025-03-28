@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
 # This script runs a series of Python scripts to generate figures.
 # Each command prints a message before executing to make the progress clear.
 
-echo "Running Figure 11: Hermes Accuracy Comparison"
+log() {
+  echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+log "Running Trace Generator..."
+python modeling/trace_generator.py
+
+log "Running Figure 11: Hermes Accuracy Comparison"
 python figures/fig_11_hermes_accuracy_comparison.py --data-file 100m_data/hermes_100m_accuracy_analysis.csv
 
-echo "Running Figure 12: Hermes Nprobe DSE NDCG"
+log "Running Figure 12: Hermes Nprobe DSE NDCG"
 python figures/fig_12_hermes_nprobe_dse_ndcg.py --data-file 100m_data/hermes_100m_accuracy_analysis.csv
 
-echo "Running Figure 12: Hermes Nprobe DSE Latency"
+log "Running Figure 12: Hermes Nprobe DSE Latency"
 python figures/fig_12_hermes_nprobe_dse_latency.py --data-file 100m_data/heremes_100m_sample_deep_analysis.csv
 
-echo "Running Figure 13: Cluster Size Frequency Analysis"
+log "Running Figure 13: Cluster Size Frequency Analysis"
 python figures/fig_13_cluster_size_frequency_analysis.py \
   --index-folder data/indices/hermes_clusters/clusters \
   --cluster-access-trace data/modeling/cluster_trace.csv \
   --clusters-searched 5
 
-echo "Running Figure 14: End-to-End Hermes Latency Comparison"
+log "Running Figure 14: End-to-End Hermes Latency Comparison"
 python figures/fig_14_end_to_end_hermes_latency_comparison.py \
   --input-size 512 \
   --output-size 128 \
@@ -34,7 +39,7 @@ python figures/fig_14_end_to_end_hermes_latency_comparison.py \
   --encoding-trace 100m_data/bge_large_latency.csv \
   --inference-trace 100m_data/gemma_2_9b_latency.csv
 
-echo "Running Figure 14: End-to-End Hermes Energy Comparison"
+log "Running Figure 14: End-to-End Hermes Energy Comparison"
 python figures/fig_14_end_to_end_hermes_energy_comparison.py \
   --input-size 512 \
   --output-size 128 \
@@ -52,7 +57,7 @@ python figures/fig_14_end_to_end_hermes_energy_comparison.py \
   --encoding-trace-power 100m_data/bge_large_power.csv \
   --inference-trace-power 100m_data/gemma_2_9b_power.csv
 
-echo "Running Figure 16: TTFT Hermes Latency Comparison"
+log "Running Figure 16: TTFT Hermes Latency Comparison"
 python figures/fig_16_ttft_hermes_latency_comparison.py \
   --input-size 512 \
   --stride-length 16 \
@@ -66,7 +71,7 @@ python figures/fig_16_ttft_hermes_latency_comparison.py \
   --encoding-trace 100m_data/bge_large_latency.csv \
   --inference-trace 100m_data/gemma_2_9b_latency.csv
 
-echo "Running Figure 18: Hermes Energy Throughput Trend"
+log "Running Figure 18: Hermes Energy Throughput Trend"
 python figures/fig_18_hermes_energy_throuhgput_analysis.py \
   --sample-nprobe 8 \
   --deep-nprobe 128 \
@@ -75,7 +80,7 @@ python figures/fig_18_hermes_energy_throuhgput_analysis.py \
   --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
   --hermes-energy-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
 
-echo "Running Figure 20: Hermes Diff Hardware Comparison"
+log "Running Figure 20: Hermes Diff Hardware Comparison"
 python figures/fig_20_hermes_diff_hardware_comparison.py \
   --sample-nprobe 8 \
   --deep-nprobe 128 \
@@ -86,7 +91,7 @@ python figures/fig_20_hermes_diff_hardware_comparison.py \
   100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
   100m_data/hermes_silver_4316_100m_modeled_retrieval_latency.csv
 
-echo "Running Figure 21: Hermes DVFS Energy Analysis"
+log "Running Figure 21: Hermes DVFS Energy Analysis"
 python figures/fig_21_hermes_dvfs_analysis.py \
   --sample-nprobe 8 \
   --deep-nprobe 128 \
@@ -94,4 +99,4 @@ python figures/fig_21_hermes_dvfs_analysis.py \
   --batch-size 32 \
   --data-file 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
 
-echo "All figures generated successfully."
+log "All figures generated successfully."
