@@ -350,7 +350,7 @@ python figures/fig_21_hermes_dvfs_analysis.py \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --batch-size 32 \
-    --data-file 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
+    --data-file data/modeling/hermes_retrieval_energy,csv
 ```
 
 ## License
