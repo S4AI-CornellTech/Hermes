@@ -77,6 +77,15 @@ python measurements/power/inference_power.py \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
 
+log "Profiling Hermes Clusters with DVFS Frequencies..."
+source measurements/dvfs/profile_dvfs_latency.sh \
+    --folder data/indices/hermes_clusters \
+    --queries triviaqa/triviaqa_encodings.npy \
+    --nprobe 128 \
+    --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
+    --retrieved-docs 5 \
+    --num-threads 32
+
 log "Running Trace Generator..."
 python modeling/trace_generator.py
 
