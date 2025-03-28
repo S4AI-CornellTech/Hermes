@@ -40,6 +40,15 @@ python measurements/latency/retrieval_hermes_clusters_latency.py \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 
+log "Running retrieval heremes sample and deep search latency measurement..>"
+python measurements/latency/retrieval_hermes_sample_deep_latency.py \
+    --index-folder data/indices/hermes_clusters \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --retrieved-docs 10 20 \
+    --num-threads 32 \
+    --queries triviaqa/triviaqa_encodings.npy
+
 log "Running encoding latency measurement..."
 python measurements/latency/encoding_latency.py \
     --model-name BAAI/bge-large-en \
