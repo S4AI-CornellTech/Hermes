@@ -75,6 +75,9 @@ def get_deep_energy(latency_data, power_data, sorted_cluster_counts, nprobe, ret
     idle_max_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == unique_frequencies[-1])]['Power (W)'].iloc[0]
 
     batch_sizes = list(sorted_cluster_counts.values())
+    cluster_ids = list(sorted_cluster_counts)
+    # print(sorted_cluster_counts)
+    # print(batch_sizes)
 
     deep_energy_base, deep_energy_dvfs, deep_energy_enhanced_dvfs = 0, 0, 0
     for num, latency in enumerate(all_deep_latencies):
@@ -82,9 +85,9 @@ def get_deep_energy(latency_data, power_data, sorted_cluster_counts, nprobe, ret
         deep_energy_dvfs_max = energy_val
         deep_energy_enhanced_dvfs_max = energy_val
 
+        not_entered = True
         for frequency in unique_frequencies:   
             current_batch_size = batch_sizes[num]
-
             # Loop until a match is found
             while True:
                 freq_latency = [
@@ -93,11 +96,14 @@ def get_deep_energy(latency_data, power_data, sorted_cluster_counts, nprobe, ret
                     int(row['Batch Size']) == current_batch_size and 
                     int(row['nprobe']) == nprobe and 
                     int(row['Retrieved Docs']) == retrieved_docs and
-                    int(row['Cluster ID']) == num
+                    int(row['Cluster ID']) == cluster_ids[num]
                 ]
                 if freq_latency:
                     # Once a match is found, update the batch size to the valid one
                     batch_sizes[num] = current_batch_size
+                    if not_entered:
+                        not_entered = False
+                        # print(current_batch_size)
                     break
                 current_batch_size += 1
 
@@ -156,9 +162,10 @@ def process_benchmark(args):
         for sample_nprobe, deep_nprobe, num_threads, batch_size, retrieved_docs in tqdm(param_combinations, desc="Parameter Combinations"):
             sampling_latency, all_sampling_latencies = get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs, num_threads)
             sampling_energy_base = get_sampling_energy(latency_data, power_data, sampling_latency, all_sampling_latencies)
-
+            
             prefill_time = 0
             decoding_time = 0
+
             with open(args.inference_trace, "r") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
@@ -169,7 +176,7 @@ def process_benchmark(args):
                         decoding_time = float(row["Avg Decode Time (s)"])
                         
             slowed_latency = prefill_time + decoding_time
-
+            
             hermes_energy = []
             hermes_dvfs_energy = []
             hermes_enhanced_dvfs_energy = []
@@ -186,10 +193,9 @@ def process_benchmark(args):
                     
                     if idx % batch_size == 0:
                         sorted_cluster_counts = {k: cluster_counts[k] for k in sorted(cluster_counts)}
-                        # print(f"\n\n{sorted_cluster_counts}")
                         deep_latency, all_deep_latencies = compute_deep_search_latency(latency_dict, sorted_cluster_counts, deep_nprobe, retrieved_docs, num_threads)
                         deep_energy_base, deep_energy_dvfs, deep_energy_enhanced_dvfs = get_deep_energy(latency_data, power_data, sorted_cluster_counts, deep_nprobe, retrieved_docs, deep_latency, all_deep_latencies, slowed_latency)
-                        luster_counts = Counter()
+                        cluster_counts = Counter()
 
                     hermes_energy.append(sampling_energy_base + deep_energy_base)
                     hermes_dvfs_energy.append(sampling_energy_base + deep_energy_dvfs)  

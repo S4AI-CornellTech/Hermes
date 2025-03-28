@@ -88,6 +88,9 @@ def main():
     decoding_energy = decoding_power * decoding_time
     monolithic_retrieval_energy = monolithic_retrieval_power * monolithic_retrieval_time
 
+    print(monolithic_retrieval_energy)
+    print(hermes_energy)
+
     num_strides = args.output_size // args.stride_length
 
     baseline_energy = (encoding_energy + prefill_energy + decoding_energy + monolithic_retrieval_energy) * num_strides

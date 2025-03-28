@@ -3,7 +3,7 @@ python modeling/latency_sim.py \
     --latency-data data/profiling/hermes_cluster_latency.csv \
     --query-trace data/modeling/cluster_trace.csv \
     --retrieved-docs 5 \
-    --batch-size 32 64 \
+    --batch-size 1 \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --num-threads 32 
@@ -28,7 +28,7 @@ python modeling/dvfs_sim.py \
     --query-trace data/modeling/cluster_trace.csv \
     --inference-trace data/profiling/inference_latency.csv \
     --retrieved-docs 5 \
-    --batch-size 32 \
+    --batch-size 1 \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --num-threads 32 \
