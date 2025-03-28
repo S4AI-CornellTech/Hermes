@@ -120,7 +120,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
     ```bash
     conda install -c pytorch -c nvidia faiss-gpu=1.8.0 pytorch=*=*cuda* pytorch-cuda=11 numpy
     conda install -c conda-forge gcc_linux-64 gxx_linux-64
-    pip install transformers vllm datasets pynvml matplotlib pyRAPL
+    pip install transformers vllm datasets pynvml matplotlib pyRAPL pymongo
     ```
 
 5. **Torchvision Dependency Corrections:**

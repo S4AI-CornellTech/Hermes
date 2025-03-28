@@ -30,7 +30,8 @@ def measure_search_power(index, queries, top_k):
     meter.end()
 
     elapsed_time = end_time - start_time
-    energy_joules = meter.result.pkg[0] / 1e3  # Convert µJ to J
+    # Correct conversion: divide by 1e6 to convert µJ (microjoules) to J (joules)
+    energy_joules = meter.result.pkg[0] / 1e6
     power_watts = energy_joules / elapsed_time if elapsed_time > 0 else 0
 
     return power_watts, energy_joules
@@ -60,7 +61,7 @@ def main():
                     power_usages = []
                     energy_usages = []
 
-                    for i in tqdm(range(0, min(len(embeddings), batch_size * 1000), batch_size), total=(min((len(embeddings) // batch_size), 1000)), desc="Processing batches", leave=False):
+                    for i in tqdm(range(0, min(len(embeddings), batch_size * 100), batch_size), total=(min((len(embeddings) // batch_size), 100)), desc="Processing batches", leave=False):
                         batch = embeddings[i:i + batch_size]
                         if len(batch) < batch_size:
                             break
