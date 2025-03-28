@@ -29,7 +29,7 @@ def main(args):
     # print('nprobe set to:', index.nprobe)
 
     # Run the search multiple times and time each run
-    RUNS = 10
+    RUNS = 1000
     times = []
 
     for run in range(RUNS):
