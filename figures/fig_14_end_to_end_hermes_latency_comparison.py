@@ -74,7 +74,15 @@ def main():
     hermes_w_enhancements = (hermes_retrieval_time + encoding_time + prefill_time + decoding_time) + \
                             (max(hermes_retrieval_time, decoding_time) + encoding_time) * (num_strides - 1)
 
-    bars = [baseline_latency, piperag, ragcache, hermes, hermes_w_enhancements]
+    # Normalize to baseline
+    bars = [
+        baseline_latency / baseline_latency,
+        piperag / baseline_latency,
+        ragcache / baseline_latency,
+        hermes / baseline_latency,
+        hermes_w_enhancements / baseline_latency
+    ]
+
     labels = ["Baseline", "Ragcache", "Piperag", "Hermes", "Hermes/PipeRAG/RAGCache"]
 
     # Create the bar plot using the same aesthetic as before
@@ -83,8 +91,8 @@ def main():
     ax.bar(labels, bars, color=colors, edgecolor="black", width=0.7)
     
     # Set title and labels with custom font sizes and weight
-    ax.set_title("End-to-End Retrieval Latency Comparison", fontsize=8, fontweight='bold')
-    ax.set_ylabel("Latency (s)", fontsize=7, fontweight='bold')
+    ax.set_title("Normalized End-to-End Retrieval Latency", fontsize=8, fontweight='bold')
+    ax.set_ylabel("Normalized Latency (Relative to Baseline)", fontsize=7, fontweight='bold')
     ax.set_xticklabels(labels, rotation=360, fontsize=6, fontweight='bold')
     ax.tick_params(axis='x', labelsize=6)
     ax.tick_params(axis='y', labelsize=6)
@@ -93,7 +101,7 @@ def main():
     ax.grid(visible=True, linestyle='--', color='gray', which='major', axis='y', zorder=0)
     
     plt.tight_layout()
-    output_path = os.path.join(args.output_dir, "fig_14_end_to_end_hermes_latency_comparison.pdf")
+    output_path = os.path.join(args.output_dir, "fig_14_normalized_latency_comparison.pdf")
     plt.savefig(output_path)
 
 if __name__ == "__main__":

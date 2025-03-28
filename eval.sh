@@ -33,7 +33,7 @@ python modeling/dvfs_sim.py \
     --deep-nprobe 128 \
     --num-threads 32 \
     --input-size 512 \
-    --stride-length 32 
+    --stride-length 16 
 
 log "Finished Evaluation."
 
