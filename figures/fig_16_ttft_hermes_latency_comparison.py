@@ -83,7 +83,7 @@ def main():
     ax.grid(visible=True, linestyle='--', color='gray', which='major', axis='y', zorder=0)
     
     plt.tight_layout()
-    output_path = os.path.join(args.output_dir, "fig_15_ttft_hermes_latency_comparison.pdf")
+    output_path = os.path.join(args.output_dir, "fig_16_ttft_hermes_latency_comparison.pdf")
     plt.savefig(output_path)
 
 if __name__ == "__main__":

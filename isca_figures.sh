@@ -34,8 +34,8 @@ python figures/fig_14_end_to_end_hermes_latency_comparison.py \
   --encoding-trace 100m_data/bge_large_latency.csv \
   --inference-trace 100m_data/gemma_2_9b_latency.csv
 
-echo "Running Figure 15: TTFT Hermes Latency Comparison"
-python figures/fig_15_ttft_hermes_latency_comparison.py \
+echo "Running Figure 16: TTFT Hermes Latency Comparison"
+python figures/fig_16_ttft_hermes_latency_comparison.py \
   --input-size 512 \
   --stride-length 16 \
   --batch-size 32 \
@@ -47,6 +47,15 @@ python figures/fig_15_ttft_hermes_latency_comparison.py \
   --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
   --encoding-trace 100m_data/bge_large_latency.csv \
   --inference-trace 100m_data/gemma_2_9b_latency.csv
+
+echo "Running Figure 18: Hermes Energy Throughput Trend"
+python figures/fig_18_hermes_energy_throuhgput_analysis.py \
+  --sample-nprobe 8 \
+  --deep-nprobe 128 \
+  --retrieved-docs 5 \
+  --batch-size 32 \
+  --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_latency.csv \
+  --hermes-energy-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv
 
 echo "Running Figure 20: Hermes Diff Hardware Comparison"
 python figures/fig_20_hermes_diff_hardware_comparison.py \
