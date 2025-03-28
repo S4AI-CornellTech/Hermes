@@ -75,7 +75,7 @@ Hermes leverages publicly available datasets:
 - ```eval.sh```: Models Hermes Latency and Energy Usage for Retrieval and runs hermes accuracy analysis scripts
 - ```isca_figures.sh```: Using the given data in 100m_data to produce the figures in the isca paper
 
-To generate the figures for the ISCA paper, first run ```build.sh```, then execute ```isca_figures.sh```. The only workflows should only be used if you plan to build, profile, and evaluate your own indices. 
+To generate the figures for the ISCA paper, first run ```build.sh```, then execute ```isca_figures.sh```. The other workflows should only be used if you plan to build, profile, and evaluate your own indices. 
 
 ---
 

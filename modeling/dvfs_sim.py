@@ -20,6 +20,7 @@ def parse_arguments():
     parser.add_argument("--batch-size", type=int, nargs='+', required=True, help="List of batch sizes for querying")
     parser.add_argument("--num-threads", type=int, nargs='+', required=True, help="Number of Threads")
     parser.add_argument("--output-dir", type=str, default="data/modeling/", help="Directory where the results will be saved")
+    parser.add_argument("--slowed-latency", type=float, required=True, help="Latency to slow enhanced DCFS too")
     return parser.parse_args()
 
 def load_csv_data(file_path):
@@ -38,7 +39,7 @@ def get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs
            and int(row["Retrieved Docs"]) == retrieved_docs
            and int(row["Num Threads"]) == num_threads
     ]
-    return max(latencies) if latencies else None
+    return max(latencies), latencies
 
 def compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retrieved_docs, num_threads):
     deep_latencies = []
@@ -49,11 +50,18 @@ def compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retri
             updated_count += 1
             key = (cluster, updated_count, deep_nprobe, retrieved_docs, num_threads)
         deep_latencies.append(latency_dict[key])
-    return max(deep_latencies) if deep_latencies else None
+    return max(deep_latencies) if deep_latencies else None, deep_latencies
+
+def get_sampling_energy(latency_data, sampling_latency, all_sampling_latencies, slowed_latency):
+    sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced = 0, 0, 0
+    for sampling_latency in all_sampling_latencies:
+        sampling_energy_base = 
+        print(sampling_latency)
+    return sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced
 
 def process_benchmark(args):
     # Load all CSV data into memory
-    latency_data = load_csv_data(args.latency_data)
+    latency_data = load_csv_data(args.latency_frequency_data)
     queries = load_csv_data(args.query_trace)
     num_clusters = get_num_clusters(latency_data)
     
@@ -66,7 +74,7 @@ def process_benchmark(args):
     
     # Ensure output directory exists.
     os.makedirs(args.output_dir, exist_ok=True)
-    output_file = os.path.join(args.output_dir, 'hermes_retrieval.csv')
+    output_file = os.path.join(args.output_dir, 'hermes_retrieval_energy.csv')
     fieldnames = [
         "Sample nprobe", "Deep nprobe", "Batch Size", "Retrieved Docs",
         "Clusters Searched", "Avg Hermes Retrieval Latency (s)", "Avg Hermes Throughput (QPS)"
@@ -79,8 +87,9 @@ def process_benchmark(args):
         # Loop over all parameter combinations using itertools.product.
         param_combinations = list(product(args.sample_nprobe, args.deep_nprobe, args.num_threads, args.batch_size, args.retrieved_docs))
         for sample_nprobe, deep_nprobe, num_threads, batch_size, retrieved_docs in tqdm(param_combinations, desc="Parameter Combinations"):
-            sampling_latency = get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs, num_threads)
-            
+            sampling_latency, all_sampling_latencies = get_sampling_latency(latency_data, batch_size, sample_nprobe, retrieved_docs, num_threads)
+            sampling_energy_base, sampling_energy_dvfs, sampling_energy_dvfs_enhanced = get_sampling_energy(latency_data, sampling_latency, all_sampling_latencies, args.slowed_latency)
+
             # Vary the number of clusters searched.
             for clusters_searched in tqdm(range(1, num_clusters + 1), desc="Clusters Searched", leave=False):
                 hermes_latencies = []
@@ -93,7 +102,7 @@ def process_benchmark(args):
                     cluster_counts.update(ranked_clusters[:clusters_searched])
                     
                     if idx % batch_size == 0:
-                        deep_latency = compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retrieved_docs, num_threads)
+                        deep_latency, all_deep_latencies = compute_deep_search_latency(latency_dict, cluster_counts, deep_nprobe, retrieved_docs, num_threads)
                         if sampling_latency is not None and deep_latency is not None:
                             hermes_latencies.append(sampling_latency + deep_latency)
                         cluster_counts = Counter()
