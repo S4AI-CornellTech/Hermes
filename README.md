@@ -64,10 +64,11 @@ Hermes leverages publicly available datasets:
 
 1. **[Environment Setup](#setup)**
 2. **[Create Monolithic, Split, and Hermes Cluster Search Indices](#datastore-creation)**
-3. **[Profile Search Latencies, and Energy](#retrieval-profiling)**
-4. **[Profile Latency and Energy of Encoding & Inference](#encoding--inference-profiling)**
+3. **[Profile Search Latencies, and Power](#retrieval-profiling)**
+4. **[Profile Latency and Power of Encoding & Inference](#encoding--inference-profiling)**
 5. **[Generate Cluster Access Traces](#trace-generator)**
 6. **[Run Multi-Node Aggregation Analysis](#multi-node-aggregation)**
+7. **[Accuracy and DVFS Evaluation + Figures](#evaluation)**
 
 🚀 Quick Scripts for Automated Building, Profiling, and Data Collection on Hermes:
 - ```build.sh```: Build Flat, Monolithic, Clustered, and Split Retrieval Indices with 100K datastore
@@ -110,6 +111,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
     conda install conda-forge::git-lfs
     git lfs install
     git lfs pull
+    git lfs fetch --all
     ```
 
     Alternative: 

@@ -1,10 +1,6 @@
 #!/bin/bash
 # run_indices.sh - A script to create various indices
 
-# Exit immediately if a command exits with a non-zero status,
-# treat unset variables as errors, and propagate errors in pipelines.
-set -euo pipefail
-
 # Function to output log messages with timestamps
 log() {
   echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $1"

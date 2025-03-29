@@ -27,8 +27,8 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
 
 log "Evaluating Hermes Energy Usage with and Without DVFS..."
 python modeling/dvfs_sim.py \
-    --latency-frequency-data data/profiling/hermes_frequency_cluster_latency.csv \
-    --power-frequency-data data/profiling/hermes_frequency_cluster_power.csv \
+    --latency-frequency-data data/profiling/hermes_cluster_latency_dvfs.csv \
+    --power-frequency-data data/profiling/hermes_cluster_latency_power.csv \
     --query-trace data/modeling/cluster_trace.csv \
     --inference-trace data/profiling/inference_latency.csv \
     --retrieved-docs 5 \

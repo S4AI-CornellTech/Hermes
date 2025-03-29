@@ -3,8 +3,6 @@
 
 # Exit immediately if a command exits with a non-zero status,
 # treat unset variables as errors, and propagate errors in pipelines.
-set -euo pipefail
-
 # Function to log messages with timestamps
 log() {
   echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $1"
@@ -17,7 +15,7 @@ python measurements/latency/retrieval_monolithic_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --nprobe 128 \
     --batch-size 16 32 64 \
-    --retrieved-docs 5 10 \
+    --retrieved-docs 5 \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 
@@ -26,7 +24,7 @@ python measurements/latency/retrieval_split_latency.py \
     --index-folder data/indices/split_indices \
     --nprobe 128 \
     --batch-size 32 64 \
-    --retrieved-docs 10 20 \
+    --retrieved-docs 5 \
     --num-threads 32 \
     --dataset-size 1000000 \
     --queries triviaqa/triviaqa_encodings.npy
@@ -45,7 +43,7 @@ python measurements/latency/retrieval_hermes_sample_deep_latency.py \
     --index-folder data/indices/hermes_clusters \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
-    --retrieved-docs 10 20 \
+    --retrieved-docs 5 \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 
