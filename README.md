@@ -10,7 +10,7 @@ Hermes is a public, open-source evaluation framework implementing the methodolog
 
 ## Overview
 
-Hermes is an algorithm-system co-design framework that intelligently distributes search clusters across multiple machines, employing hierarchical search and Dynamic Voltage and Frequency Scaling (DVFS) to optimize retrieval latency and energy consumption. Built on open-source LLMs and retrieval indices from publicly available datasets, running on commodity hardware, Hermes achieves:
+Hermes is an algorithm-system co-design framework that intelligently distributes search clusters across multiple machines, employing hierarchical search and Dynamic Voltage and Frequency Scaling (DVFS) to optimize retrieval latency and energy consumption. Hermes is built on open-source LLMs and retrieval indices from publicly available datasets and running on commodity hardware:
 
 <img src="images/HermesArchitecture.png" alt="Hermes" style="width:100%;">
 
