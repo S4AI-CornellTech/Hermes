@@ -116,7 +116,7 @@ def get_deep_energy(latency_data, power_data, sorted_cluster_counts, nprobe, ret
                 if deep_energy_freq < deep_energy_dvfs_max:
                     deep_energy_dvfs_max = deep_energy_freq
 
-            if frequency_latency_value < slowed_latency:
+            if frequency_latency_value < max(deep_latency, slowed_latency):
                 busy_freq_power_value = power_data[(power_data['State'] == 'busy') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
                 idle_freq_power_value = power_data[(power_data['State'] == 'idle') & (power_data['Frequency (Khz)'] == frequency)]['Power (W)'].iloc[0]
                 deep_energy_enhanced_freq = frequency_latency_value * busy_freq_power_value + (deep_latency - frequency_latency_value) * idle_freq_power_value
