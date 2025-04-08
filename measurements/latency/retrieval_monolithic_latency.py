@@ -26,7 +26,7 @@ def perform_queries(index, retrieved_docs, embeddings, batch_size, max_batches=1
     query_times = []
     
     # Progress bar for the query batches (position=4)
-    for idx in tqdm(range(0, len(embeddings), batch_size),
+    for idx in tqdm(range(0, min(len(embeddings), max_batches * batch_size), batch_size),
                     desc="Querying batches",
                     leave=False,
                     position=4):
@@ -35,9 +35,6 @@ def perform_queries(index, retrieved_docs, embeddings, batch_size, max_batches=1
         _, _ = index.search(batch, retrieved_docs)
         query_end = time.time()
         query_times.append(query_end - query_start)
-        
-        if idx >= batch_size * max_batches:
-            break
     
     return sum(query_times) / len(query_times) if query_times else 0
 

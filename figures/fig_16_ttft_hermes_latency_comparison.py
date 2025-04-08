@@ -12,6 +12,7 @@ def main():
     parser.add_argument("--input-size", type=int, required=True, help="Input size")
     parser.add_argument("--stride-length", type=int, required=True, help="Stride length")
     parser.add_argument("--batch-size", type=int, required=True, help="Batch size")
+    parser.add_argument("--monolithic-nprobe", type=int, required=True, help="Monolithic nprobe")
     parser.add_argument("--sample-nprobe", type=int, required=True, help="Sample nprobe")
     parser.add_argument("--deep-nprobe", type=int, required=True, help="Deep nprobe")
     parser.add_argument("--retrieved-docs", type=int, required=True, help="Number of documents retrieved")
@@ -33,7 +34,7 @@ def main():
     with open(args.monolithic_retrieval_trace, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if int(row["Batch Size"]) == args.batch_size and int(row["nprobe"]) == args.deep_nprobe:
+            if int(row["Batch Size"]) == args.batch_size and int(row["nprobe"]) == args.monolithic_nprobe:
                 monolithic_retrieval_time = float(row["Avg Retrieval Time (s)"])
 
     with open(args.encoding_trace, "r") as f:
