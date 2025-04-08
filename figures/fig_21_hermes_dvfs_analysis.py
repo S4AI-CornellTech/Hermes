@@ -104,8 +104,8 @@ def main():
     fig.legend(handles, labels, loc='lower center', bbox_to_anchor=(0.55, 0.85), ncol=3, fontsize=6)
 
     # Set y-axis limits to mirror the previous normalized plot
-    ax.set_ylim(0.8, 1.02)
-    ax.set_yticks([0.80, 0.85, 0.90, 0.95, 1.0])
+    ax.set_ylim(0.7, 1.02)
+    ax.set_yticks([0.7, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0])
 
     # Adjust layout and save the figure
     plt.tight_layout(rect=[0, 0, 1, 0.9])
