@@ -88,7 +88,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
 
 ## Setup
 
-You can set up the environment for evaluating Hermes either by building a Docker image or by installing the required packages directly on your native Linux system.
+You can set up the environment for evaluating Hermes either by building a Docker image or by installing the required packages directly on your native Linux system. *Note: For DVFS and energy analysis, the Docker image cannot be used due to its read-only file system. In this case, you must set up the repository natively on a machine with sudo access.*
 
 ### Docker Image
 

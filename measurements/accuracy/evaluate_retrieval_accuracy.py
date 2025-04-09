@@ -1,6 +1,4 @@
 from faiss import read_index
-from datasets import load_dataset
-from transformers import BertTokenizer, BertModel
 import numpy as np
 import faiss
 from tqdm import tqdm
@@ -37,7 +35,8 @@ def main():
     parser.add_argument("--split-index-size", type=int, required=True, help="Total number of vectors across all indices (used to adjust document IDs)")
     parser.add_argument("--cluster-index-folder", type=str, required=True, help="Path to the clustered FAISS index folder")
     parser.add_argument("--cluster-index-indices-folder", type=str, required=True, help="Path to the clustered FAISS index folder")
-    parser.add_argument("--nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
+    parser.add_argument("--monolithic-nprobe", type=int, required=True, help="nprobe value for monolithic index")
+    parser.add_argument("--deep-nprobe", type=int, nargs='+', required=True, help="List of deep nprobe values for FAISS search")
     parser.add_argument("--sample-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
     parser.add_argument("--retrieved-docs", type=int, nargs='+', required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--queries", type=str, required=True, help="Path to the NumPy file containing embeddings")
@@ -74,9 +73,9 @@ def main():
         writer.writeheader()
         
         for sample_nProbe in tqdm(args.sample_nprobe, desc=f"Sample nProbe", position=0, leave=False):
-            for nProbe in tqdm(args.nprobe, desc=f"nProbe (Sample nProbe={sample_nProbe})", position=1, leave=False):
+            for nProbe in tqdm(args.deep_nprobe, desc=f"nProbe (Sample nProbe={sample_nProbe})", position=1, leave=False):
                 for retrieved_docs in tqdm(args.retrieved_docs, desc=f"Retrieved Docs (Sample nProbe={sample_nProbe}, nprobe={nProbe})", position=2, leave=False):
-                    monolithic_index.nprobe = nProbe
+                    monolithic_index.nprobe = args.monolithic_nprobe
                     
                     monolithic_ndcgs, monolithic_recalls = [], []
                     split_ndcgs, split_recalls = [], []
@@ -100,7 +99,6 @@ def main():
                                 small_nprobe_searches.append(sum(cluster_distances.flatten()) / len(cluster_distances.flatten()))
                             
                             sorted_indices = sorted(range(len(small_nprobe_searches)), key=lambda x: small_nprobe_searches[x], reverse=True)
-
                         
                             split_indices_distances, split_indices_docs = [], []
                             for i, split_index in enumerate(split_indices[:clusters_searched]):
@@ -145,7 +143,7 @@ def main():
                         writer.writerow({
                             "Number of Clusters Searched": clusters_searched,
                             "Sample nProbe": sample_nProbe,
-                            "nProbe": nProbe,
+                            "Deep nProbe": nProbe,
                             "Monolithic Recall": np.mean(monolithic_recalls),
                             "Split Recall": np.mean(split_recalls),
                             "Cluster Recall": np.mean(cluster_recalls),
