@@ -92,11 +92,24 @@ You can set up the environment for evaluating Hermes either by building a Docker
 
 ### Docker Image
 
+1. **Pull Docker Image**
+    ```bash
+    sudo docker pull michaeltshen/hermes-env:latest
+    ```
+
+2. **Run Docker Container with GPU Support**
+    ```bash
+    sudo docker run --gpus all -it michaeltshen/hermes-env:latest
+    ```
+
+Alternatively you can build the docker image with the incldued Dockerfile file
+
 1. **Download Encoded TriviaQA Queries:**
 
     - [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
 
 2. **Build Docker Image**
+    Run the following from the base of the repo:
     ```bash
     sudo docker build -t hermes-env .
     ```
