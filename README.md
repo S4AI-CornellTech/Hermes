@@ -88,7 +88,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
 
 ## Setup
 
-You can set up the environment for evaluating Hermes either by building a Docker image or by installing the required packages directly on your native Linux system. *Note: For DVFS and energy analysis, the Docker image cannot be used due to its read-only file system. In this case, you must set up the repository natively on a machine with sudo access.*
+You can set up the environment for evaluating Hermes either by building a Docker image or by installing the required packages directly on your native Linux system. *Note: For DVFS and energy analysis, the Docker image must be run in a priviledged state and with write access granted to sys.*
 
 ### Docker Image
 
@@ -99,7 +99,7 @@ You can set up the environment for evaluating Hermes either by building a Docker
 
 2. **Run Docker Container with GPU Support**
     ```bash
-    sudo docker run --gpus all -it michaeltshen/hermes-env:latest
+    sudo docker run --gpus all --privileged -v /sys:/sys -it michaeltshen/hermes-env:latest
     ```
 
 Alternatively you can build the docker image with the incldued Dockerfile file
@@ -117,7 +117,7 @@ Alternatively you can build the docker image with the incldued Dockerfile file
 
 3. **Run Docker Container with GPU Support**
     ```bash
-    sudo docker run --gpus all -it hermes-env
+    sudo docker run --gpus all --privileged -v /sys:/sys -it hermes-env
     ```
 
 ### Native Environment Setup
