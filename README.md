@@ -88,6 +88,26 @@ The other workflows are intended for users who wish to build, profile, and evalu
 
 ## Setup
 
+You can set up the environment for evaluating Hermes either by building a Docker image or by installing the required packages directly on your native Linux system.
+
+### Docker Image
+
+1. **Download Encoded TriviaQA Queries:**
+
+    - [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
+
+2. **Build Docker Image**
+    ```bash
+    sudo docker build -t hermes-env .
+    ```
+
+3. **Run Docker IMage**
+    ```bash
+    sudo docker run --gpus all -it hermes-env
+    ```
+
+### Native Environment Setup
+
 1. **Create a Conda Environment:**
     ```bash
     conda create -n hermes python=3.11
