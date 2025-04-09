@@ -10,7 +10,11 @@ log "Running Trace Generator..."
 python modeling/trace_generator.py
 
 log "Running Figure 11: Hermes Accuracy Comparison"
-python figures/fig_11_hermes_accuracy_comparison.py --data-file 100m_data/hermes_100m_accuracy_analysis.csv
+python figures/fig_11_hermes_accuracy_comparison.py \
+  --data-file 100m_data/hermes_100m_accuracy_analysis.csv \
+  --sample-nprobe 8 \
+  --deep-nprobe 128 \
+  --monolithic-nprobe 256
 
 log "Running Figure 12: Hermes Nprobe DSE NDCG"
 python figures/fig_12_hermes_nprobe_dse_ndcg.py --data-file 100m_data/hermes_100m_accuracy_analysis.csv
