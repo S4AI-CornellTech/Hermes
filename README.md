@@ -101,7 +101,7 @@ You can set up the environment for evaluating Hermes either by building a Docker
     sudo docker build -t hermes-env .
     ```
 
-3. **Run Docker IMage**
+3. **Run Docker Container with GPU Support**
     ```bash
     sudo docker run --gpus all -it hermes-env
     ```
