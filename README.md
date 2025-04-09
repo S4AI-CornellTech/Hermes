@@ -100,18 +100,7 @@ The other workflows are intended for users who wish to build, profile, and evalu
     cd Hermes
     ```
 
-3. **Pull Large Files With git lfs:**
-
-    Hermes uses Git Large File Storage (LFS). Alternatively, manually download the required files and place them in the corresponding folders:
-
-    ```bash
-    conda install conda-forge::git-lfs
-    git lfs install
-    git lfs pull
-    git lfs fetch --all
-    ```
-
-    Alternative: 
+3. **Download Encoded TriviaQA Queries:**
 
     - [`triviaqa_encodings.npy`](https://drive.google.com/file/d/1xFBQnltn_KtwSjE-aGIChgwxtyKroneJ/view?usp=sharing) → `triviaqa/`
 
