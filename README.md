@@ -102,7 +102,7 @@ You can set up the environment for evaluating Hermes either by building a Docker
     sudo docker run --gpus all --privileged -v /sys:/sys -it michaeltshen/hermes-env:latest
     ```
 
-Alternatively you can build the docker image with the incldued Dockerfile file
+Alternatively you can build the docker image with the included Dockerfile file
 
 1. Clone Repository:
 
