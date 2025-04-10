@@ -410,13 +410,20 @@ python modeling/dvfs_sim.py \
 
 ```bash
 python figures/fig_11_hermes_accuracy_comparison.py \
-    --data-file data/accuracy_eval.csv
+    --data-file data/accuracy_eval.csv \
+    --sample-nprobe 8 \
+    --deep-nprobe 128 \
+    --monolithic-nprobe 256
 
 python figures/fig_12_hermes_nprobe_dse_ndcg.py \
-    --data-file data/accuracy_eval.csv
+    --data-file data/accuracy_eval.csv \
+    --sample-nprobe 8 \
+    --deep-nprobe 128
 
 python figures/fig_12_hermes_nprobe_dse_latency.py \
     --data-file data/profiling/hermes_sample_deep_latency.csv
+    --sample-nprobe 8 \
+    --deep-nprobe 128
 
 python figures/fig_13_cluster_size_frequency_analysis.py \
     --index-folder data/indices/hermes_clusters/clusters \
