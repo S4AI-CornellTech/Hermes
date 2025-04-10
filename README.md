@@ -262,24 +262,24 @@ For a comprehensive list of supported inference models, please refer to the [vll
 Example Encoding and Inference latency tests:
 ```bash
 python measurements/latency/encoding_latency.py \
-    --model-name BAAI/bge-large-en \
+    --model-name BAAI/bge-large-en \ # Can most encoder models on huggingface
     --batch-size 16 32 \
     --input-lengths 16 32 64 128
 
 python measurements/power/encoding_power.py \
-    --model-name BAAI/bge-large-en \
+    --model-name BAAI/bge-large-en \ # Can most encoder models on huggingface
     --batch-size 16 32 \
     --input-lengths 16 32 64 128
 
 python measurements/latency/inference_latency.py \
-    --model-name "google/gemma-2-9b" \
+    --model-name "google/gemma-2-9b" \ # Can support most inference models within vLLM documentation
     --num-gpus 1 \
     --batch-size 16 32 \
     --input-lengths 32 128 512 \
     --output-lengths 4 16 32
 
 python measurements/power/inference_power.py \
-    --model-name "google/gemma-2-9b" \
+    --model-name "google/gemma-2-9b" \ # Can support most inference models within vLLM documentation
     --num-gpus 1 \
     --batch-size 16 32 \
     --input-lengths 32 128 512 \
@@ -292,8 +292,8 @@ python measurements/power/inference_power.py \
 
 ```bash
 source measurements/dvfs/profile_dvfs_latency.sh \
-    --folder data/indices/hermes_clusters \
-    --queries triviaqa/triviaqa_encodings.npy \
+    --folder data/indices/hermes_clusters \ # File path to clustered indices folder
+    --queries triviaqa/triviaqa_encodings.npy \ 
     --nprobe 128 \
     --batch-size 1 2 4 8 16 24 32 40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 160 \
     --retrieved-docs 5 \
@@ -360,8 +360,8 @@ python modeling/trace_generator.py
 
 ```bash
 python modeling/latency_sim.py \
-    --latency-data data/profiling/hermes_cluster_latency.csv \
-    --query-trace data/modeling/cluster_trace.csv \
+    --latency-data data/profiling/hermes_cluster_latency.csv \ # File path to profiled dvfs latency data on clustered indices
+    --query-trace data/modeling/cluster_trace.csv \ # File path to cluster access trace generated 
     --retrieved-docs 5 \
     --batch-size 32 64 \
     --sample-nprobe 8 \
@@ -377,12 +377,12 @@ python modeling/latency_sim.py \
 
 ```bash
 python measurements/accuracy/evaluate_retrieval_accuracy.py \
-    --flat-index data/indices/flat_indices/hermes_index_flat_100k.faiss \
-    --monolithic-index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
-    --split-index-folder data/indices/split_indices \
-    --split-index-size 100000 \
-    --cluster-index-folder data/indices/hermes_clusters/clusters \
-    --cluster-index-indices-folder data/indices/hermes_clusters/cluster_indices \
+    --flat-index data/indices/flat_indices/hermes_index_flat_100k.faiss \ # File path to flat index
+    --monolithic-index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \ # File path to monolithic index
+    --split-index-folder data/indices/split_indices \ # File path to folder where split indices are
+    --split-index-size 100000 \ # How large of a dataset the indices are built on
+    --cluster-index-folder data/indices/hermes_clusters/clusters \ # File path to clustered indices folder 
+    --cluster-index-indices-folder data/indices/hermes_clusters/cluster_indices \ # File path to cluster indicies ID's folder
     --nprobe 128 \
     --sample-nprobe 8 \
     --retrieved-docs 5 \
@@ -393,10 +393,10 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
 
 ```bash
 python modeling/dvfs_sim.py \
-    --latency-frequency-data data/profiling/hermes_frequency_cluster_latency.csv \
-    --power-frequency-data data/profiling/hermes_frequency_cluster_power.csv \
-    --query-trace data/modeling/cluster_trace.csv \
-    --inference-trace data/profiling/inference_latency.csv \
+    --latency-frequency-data data/profiling/hermes_frequency_cluster_latency.csv \ # File path to profiled dvfs latency data on clustered indices
+    --power-frequency-data data/profiling/hermes_frequency_cluster_power.csv \ # File path to profiled dvfs power data on IVF search
+    --query-trace data/modeling/cluster_trace.csv \ # File path to cluster access trace generated 
+    --inference-trace data/profiling/inference_latency.csv \ # File path to profiled inference latencies
     --retrieved-docs 5 \
     --batch-size 32 \
     --sample-nprobe 8 \
@@ -410,24 +410,24 @@ python modeling/dvfs_sim.py \
 
 ```bash
 python figures/fig_11_hermes_accuracy_comparison.py \
-    --data-file data/accuracy_eval.csv \
+    --data-file data/accuracy_eval.csv \ # File path to output file produced from accuracy evaluation
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --monolithic-nprobe 256
 
 python figures/fig_12_hermes_nprobe_dse_ndcg.py \
-    --data-file data/accuracy_eval.csv \
+    --data-file data/accuracy_eval.csv \ # File path to output file produced from accuracy evaluation
     --sample-nprobe 8 \
     --deep-nprobe 128
 
 python figures/fig_12_hermes_nprobe_dse_latency.py \
-    --data-file data/profiling/hermes_sample_deep_latency.csv
+    --data-file data/profiling/hermes_sample_deep_latency.csv # File path to output file produced from hermes sample deep latency script
     --sample-nprobe 8 \
     --deep-nprobe 128
 
 python figures/fig_13_cluster_size_frequency_analysis.py \
-    --index-folder data/indices/hermes_clusters/clusters \
-    --cluster-access-trace data/modeling/cluster_trace.csv \
+    --index-folder data/indices/hermes_clusters/clusters \ # File path to clustered indices folder
+    --cluster-access-trace data/modeling/cluster_trace.csv \ # File path to cluster access trace generated 
     --clusters-searched 5
 
 python figures/fig_14_end_to_end_hermes_latency_comparison.py \
@@ -440,10 +440,10 @@ python figures/fig_14_end_to_end_hermes_latency_comparison.py \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --clusters-searched 4 \
-    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \
-    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \
-    --encoding-trace data/profiling/encoding_latency.csv \
-    --inference-trace data/profiling/inference_latency.csv
+    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \ # File path to profiled monolithic retrieval index latency
+    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \ # File path to hermes multi node aggregation retrieval latency output
+    --encoding-trace data/profiling/encoding_latency.csv \ # File path to profiled encoder model latency
+    --inference-trace data/profiling/inference_latency.csv # File path to profiled inference latencies
 
 python figures/fig_14_end_to_end_hermes_energy_comparison.py \
     --input-size 512 \
@@ -455,13 +455,13 @@ python figures/fig_14_end_to_end_hermes_energy_comparison.py \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --clusters-searched 4 \
-    --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv \
-    --monolithic-retrieval-trace 100m_data/monolithic_retrieval_latency.csv \
-    --encoding-trace 100m_data/bge_large_latency.csv \
-    --inference-trace 100m_data/gemma_2_9b_latency.csv \
-    --monolithic-retrieval-trace-power 100m_data/monolithic_retrieval_power.csv \
-    --encoding-trace-power 100m_data/bge_large_power.csv \
-    --inference-trace-power 100m_data/gemma_2_9b_power.csv
+    --hermes-retrieval-trace 100m_data/hermes_platinum_8380_100m_modeled_retrieval_energy.csv \ # File path to hermes multi node aggregation retrieval latency output
+    --monolithic-retrieval-trace 100m_data/monolithic_retrieval_latency.csv \ # File path to profiled monolithic retrieval index latency
+    --encoding-trace 100m_data/bge_large_latency.csv \ # File path to profiled encoder model latency
+    --inference-trace 100m_data/gemma_2_9b_latency.csv \ # File path to profiled inference latencies
+    --monolithic-retrieval-trace-power 100m_data/monolithic_retrieval_power.csv \ # File path to inference retrieval power
+    --encoding-trace-power 100m_data/bge_large_power.csv \ # File path to profiled encoder model power
+    --inference-trace-power 100m_data/gemma_2_9b_power.csv # File path to profiled inference power
 
 python figures/fig_16_ttft_hermes_latency_comparison.py \
     --input-size 512 \
@@ -471,10 +471,10 @@ python figures/fig_16_ttft_hermes_latency_comparison.py \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
-    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \
-    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \
-    --encoding-trace data/profiling/encoding_latency.csv \
-    --inference-trace data/profiling/inference_latency.csv
+    --monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \ # File path to profiled monolithic retrieval index latency
+    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \ # File path to hermes multi node aggregation retrieval latency output
+    --encoding-trace data/profiling/encoding_latency.csv \ # File path to profiled encoder model latency
+    --inference-trace data/profiling/inference_latency.csv # File path to profiled inference latencies
 
 python figures/fig_18_hermes_energy_throuhgput_analysis.py \
     --sample-nprobe 8 \
@@ -482,22 +482,22 @@ python figures/fig_18_hermes_energy_throuhgput_analysis.py \
     --retrieved-docs 5 \
     --batch-size 32 \
     --clusters-searched 4 \
-    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \
-    --hermes-energy-trace data/modeling/hermes_retrieval_energy.csv \
+    --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \ # File path to hermes multi node aggregation retrieval latency output
+    --hermes-energy-trace data/modeling/hermes_retrieval_energy.csv \ # File path to hermes DVFS energy analysis output
 
 python figures/fig_20_hermes_diff_hardware_comparison.py \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --batch-size 32 \
-    --hermes-retrieval-traces data/modeling/hermes_retrieval.csv
+    --hermes-retrieval-traces data/modeling/hermes_retrieval.csv # File path to hermes multi node aggregation retrieval latency output(s) Can be a string of multiple traces and files
 
 python figures/fig_21_hermes_dvfs_analysis.py \
     --sample-nprobe 8 \
     --deep-nprobe 128 \
     --retrieved-docs 5 \
     --batch-size 32 \
-    --data-file data/modeling/hermes_retrieval_energy.csv
+    --data-file data/modeling/hermes_retrieval_energy.csv # File path to hermes DVFS energy analysis output
 ```
 
 ## License
