@@ -490,7 +490,7 @@ python figures/fig_18_hermes_energy_throuhgput_analysis.py \
     --batch-size 32 \
     --clusters-searched 4 \
     --hermes-retrieval-trace data/modeling/hermes_retrieval.csv \ # File path to hermes multi node aggregation retrieval latency output
-    --hermes-energy-trace data/modeling/hermes_retrieval_energy.csv \ # File path to hermes DVFS energy analysis output
+    --hermes-energy-trace data/modeling/hermes_retrieval_energy.csv # File path to hermes DVFS energy analysis output
 
 python figures/fig_20_hermes_diff_hardware_comparison.py \
     --sample-nprobe 8 \
