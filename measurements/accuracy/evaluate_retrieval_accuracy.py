@@ -40,7 +40,7 @@ def main():
     parser.add_argument("--sample-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
     parser.add_argument("--retrieved-docs", type=int, nargs='+', required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--queries", type=str, required=True, help="Path to the NumPy file containing embeddings")
-    parser.add_argument("--max-batches", type=int, required=False, default=10, help="Number of queries to test accuracy on")
+    parser.add_argument("--max-batches", type=int, required=False, default=1000, help="Number of queries to test accuracy on")
     parser.add_argument("--output-dir", type=str, default="data/", help="Directory where the results will be saved")
     args = parser.parse_args()
 
