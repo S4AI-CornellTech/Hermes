@@ -109,7 +109,6 @@ def main():
 
                             sorted_split_indices = np.argsort(split_indices_distances)[-1:-(retrieved_docs + 1):-1]
                             split_corresponding_docs = [split_indices_docs[i] for i in sorted_split_indices]
-                            print(f"SPLIT CORRESPONDING DOCS: {split_corresponding_docs}")
 
                             split_ndcg = calculate_ndcg(split_corresponding_docs, ground_truth_docs[0])
                             split_recall = calculate_recall(split_corresponding_docs, ground_truth_docs[0])
