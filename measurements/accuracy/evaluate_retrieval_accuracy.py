@@ -40,6 +40,7 @@ def main():
     parser.add_argument("--sample-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
     parser.add_argument("--retrieved-docs", type=int, nargs='+', required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--queries", type=str, required=True, help="Path to the NumPy file containing embeddings")
+    parser.add_argument("--max-batches", type=int, required=False, default=1000, help="Number of queries to test accuracy on")
     parser.add_argument("--output-dir", type=str, default="data/", help="Directory where the results will be saved")
     args = parser.parse_args()
 
@@ -61,7 +62,7 @@ def main():
         fieldnames = [
             "Number of Clusters Searched",
             "Sample nProbe",
-            "nProbe",
+            "Deep nProbe",
             "Monolithic Recall",
             "Split Recall",
             "Cluster Recall",
@@ -82,7 +83,7 @@ def main():
                     cluster_ndcgs, cluster_recalls = [], []
                     
                     for clusters_searched in tqdm(range(1, num_cluster_indices + 1), desc=f"Clusters Searched (Sample nProbe={sample_nProbe}, nprobe={nProbe}, Retrieved Docs={retrieved_docs})", position=3, leave=False):
-                        for emb_num in tqdm(range(0, 100, 1), desc=f"Queries (Sample nProbe={sample_nProbe}, nprobe={nProbe}, Retrieved Docs={retrieved_docs}, Clusters Searched={clusters_searched})", position=4, leave=False):
+                        for emb_num in tqdm(range(0, args.max_batches, 1), desc=f"Queries (Sample nProbe={sample_nProbe}, nprobe={nProbe}, Retrieved Docs={retrieved_docs}, Clusters Searched={clusters_searched})", position=4, leave=False):
                             query = embeddings_array[emb_num:emb_num+1][0:1]
 
                             ground_truth_distances, ground_truth_docs = flat_index.search(query, retrieved_docs)

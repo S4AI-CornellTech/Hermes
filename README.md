@@ -390,8 +390,9 @@ python measurements/accuracy/evaluate_retrieval_accuracy.py \
     --split-index-size 100000 \ # How large of a dataset the indices are built on
     --cluster-index-folder data/indices/hermes_clusters/clusters \ # File path to clustered indices folder 
     --cluster-index-indices-folder data/indices/hermes_clusters/cluster_indices \ # File path to cluster indicies ID's folder
-    --nprobe 128 \
+    --monolithic-nprobe 256 \
     --sample-nprobe 8 \
+    --deep-nprobe 128 \
     --retrieved-docs 5 \
     --queries triviaqa/triviaqa_encodings.npy 
 ```
