@@ -40,7 +40,7 @@ def main():
     parser.add_argument("--sample-nprobe", type=int, nargs='+', required=True, help="List of nprobe values for FAISS search")
     parser.add_argument("--retrieved-docs", type=int, nargs='+', required=True, help="List of numbers of docs retrieved per query")
     parser.add_argument("--queries", type=str, required=True, help="Path to the NumPy file containing embeddings")
-    parser.add_argument("--max-batches", type=int, required=False, default=1000, help="Number of queries to test accuracy on")
+    parser.add_argument("--max-batches", type=int, required=False, default=10, help="Number of queries to test accuracy on")
     parser.add_argument("--output-dir", type=str, default="data/", help="Directory where the results will be saved")
     args = parser.parse_args()
 
@@ -77,12 +77,11 @@ def main():
             for nProbe in tqdm(args.deep_nprobe, desc=f"nProbe (Sample nProbe={sample_nProbe})", position=1, leave=False):
                 for retrieved_docs in tqdm(args.retrieved_docs, desc=f"Retrieved Docs (Sample nProbe={sample_nProbe}, nprobe={nProbe})", position=2, leave=False):
                     monolithic_index.nprobe = args.monolithic_nprobe
-                    
-                    monolithic_ndcgs, monolithic_recalls = [], []
-                    split_ndcgs, split_recalls = [], []
-                    cluster_ndcgs, cluster_recalls = [], []
-                    
                     for clusters_searched in tqdm(range(1, num_cluster_indices + 1), desc=f"Clusters Searched (Sample nProbe={sample_nProbe}, nprobe={nProbe}, Retrieved Docs={retrieved_docs})", position=3, leave=False):
+                        monolithic_ndcgs, monolithic_recalls = [], []
+                        split_ndcgs, split_recalls = [], []
+                        cluster_ndcgs, cluster_recalls = [], []
+
                         for emb_num in tqdm(range(0, args.max_batches, 1), desc=f"Queries (Sample nProbe={sample_nProbe}, nprobe={nProbe}, Retrieved Docs={retrieved_docs}, Clusters Searched={clusters_searched})", position=4, leave=False):
                             query = embeddings_array[emb_num:emb_num+1][0:1]
 
@@ -105,11 +104,12 @@ def main():
                             for i, split_index in enumerate(split_indices[:clusters_searched]):
                                 split_index.nprobe = nProbe
                                 split_distances, split_docs = split_index.search(query, retrieved_docs)
-                                split_indices_docs.extend((split_docs.flatten() + i * (args.split_index_size / num_split_indices)).tolist())
+                                split_indices_docs.extend((split_docs.flatten() + i * (int(args.split_index_size / num_split_indices))).tolist())
                                 split_indices_distances.extend(split_distances.flatten().tolist())
 
                             sorted_split_indices = np.argsort(split_indices_distances)[-1:-(retrieved_docs + 1):-1]
                             split_corresponding_docs = [split_indices_docs[i] for i in sorted_split_indices]
+                            print(f"SPLIT CORRESPONDING DOCS: {split_corresponding_docs}")
 
                             split_ndcg = calculate_ndcg(split_corresponding_docs, ground_truth_docs[0])
                             split_recall = calculate_recall(split_corresponding_docs, ground_truth_docs[0])
@@ -140,7 +140,7 @@ def main():
                             split_recalls.append(split_recall)
                             cluster_ndcgs.append(cluster_ndcg)
                             cluster_recalls.append(cluster_recall)
-
+                            
                         writer.writerow({
                             "Number of Clusters Searched": clusters_searched,
                             "Sample nProbe": sample_nProbe,
@@ -153,7 +153,6 @@ def main():
                             "Cluster NDCG": np.mean(cluster_ndcgs),
                         })
                         output_file.flush()  # Ensure data is written incrementally
-
 
 if __name__ == "__main__":
     main()
