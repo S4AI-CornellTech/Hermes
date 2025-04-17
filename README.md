@@ -326,7 +326,11 @@ Unfortunately, as of  now there are no scripts for automatically measuring the p
     Run the stress script to initiate the IVF search. Wait for the "RUN" print statements to appear before proceeding with power measurements.
 
     ```bash
-    python measurements/dvfs/stress_ivf.py --index "$index_file" --nprobe "$nProbe" --queries "$queries"
+    python measurements/dvfs/stress_ivf.py \
+        --index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \ # Path to monolithic index or single index to profile IVF power for
+        --nprobe 256 \ # Should be a high nProbe value
+        --num-threads 32 \ # Should also be a high value that stresses system (ideally all threads)
+        --queries triviaqa/triviaqa_encodings.npy
     ```
 
     Terminal 2: Monitor Power Consumption

@@ -5,8 +5,7 @@ import time
 
 def main(args):
     # Set number of threads for FAISS
-    NUM_THREADS = 32
-    faiss.omp_set_num_threads(NUM_THREADS)
+    faiss.omp_set_num_threads(args.num_threads)
 
     # Load query encodings from file
     query_encodings = np.load(args.queries)
@@ -44,6 +43,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FAISS Index Search Script")
     parser.add_argument("--queries", type=str, help="Path to the numpy file containing query encodings")
     parser.add_argument("--index", type=str, help="Path to the FAISS index file")
+    parser.add_argument("--num-threads", type=int, default=32, help="Number of threads for FAISS")
     parser.add_argument("--nprobe", type=str, help="nprobe value")
     args = parser.parse_args()
     main(args)
