@@ -13,8 +13,8 @@ log "Starting measurements script..."
 log "Running retrieval monolithic latency measurement..."
 python measurements/latency/retrieval_monolithic_latency.py \
     --index-name data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
-    --nprobe 128 \
-    --batch-size 16 32 64 \
+    --nprobe 256 \
+    --batch-size 32 \
     --retrieved-docs 5 \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
@@ -23,7 +23,7 @@ log "Running retrieval split latency measurement..."
 python measurements/latency/retrieval_split_latency.py \
     --index-folder data/indices/split_indices \
     --nprobe 128 \
-    --batch-size 32 64 \
+    --batch-size 32 \
     --retrieved-docs 5 \
     --num-threads 32 \
     --dataset-size 1000000 \
@@ -38,7 +38,7 @@ python measurements/latency/retrieval_hermes_clusters_latency.py \
     --num-threads 32 \
     --queries triviaqa/triviaqa_encodings.npy
 
-log "Running retrieval heremes sample and deep search latency measurement..>"
+log "Running retrieval hermes sample and deep search latency measurement..."
 python measurements/latency/retrieval_hermes_sample_deep_latency.py \
     --index-folder data/indices/hermes_clusters \
     --sample-nprobe 8 \
@@ -50,30 +50,30 @@ python measurements/latency/retrieval_hermes_sample_deep_latency.py \
 log "Running encoding latency measurement..."
 python measurements/latency/encoding_latency.py \
     --model-name BAAI/bge-large-en \
-    --batch-size 16 32 \
-    --input-lengths 16 32 64 128
+    --batch-size 32 \
+    --input-lengths 128
 
 log "Running encoding power measurement..."
 python measurements/power/encoding_power.py \
     --model-name BAAI/bge-large-en \
-    --batch-size 16 32 \
-    --input-lengths 16 32 64 128
+    --batch-size 32 \
+    --input-lengths 128
 
 log "Running inference latency measurement..."
 python measurements/latency/inference_latency.py \
     --model-name "gpt2" \
     --num-gpus 1 \
-    --batch-size 16 32 \
-    --input-lengths 32 128 512 \
-    --output-lengths 4 16 32
+    --batch-size 32 \
+    --input-lengths 512 \
+    --output-lengths 32
 
 log "Running inference power measurement..."
 python measurements/power/inference_power.py \
     --model-name "gpt2" \
     --num-gpus 1 \
-    --batch-size 16 32 \
-    --input-lengths 32 128 512 \
-    --output-lengths 4 16 32
+    --batch-size 32 \
+    --input-lengths 512 \
+    --output-lengths 32
 
 log "Profiling Hermes Clusters with DVFS Frequencies..."
 source measurements/dvfs/profile_dvfs_latency.sh \

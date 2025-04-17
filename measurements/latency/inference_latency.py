@@ -66,7 +66,7 @@ def main():
     parser = argparse.ArgumentParser(description="LLM Inference Benchmarking")
     parser.add_argument("--model-name", type=str, required=True, help="Model name to evaluate")
     parser.add_argument("--num-gpus", type=int, required=True, help="Number of GPUs to use")
-    parser.add_argument("--batch-sizes", type=int, nargs='+', required=True, help="List of batch sizes for inference")
+    parser.add_argument("--batch-size", type=int, nargs='+', required=True, help="List of batch sizes for inference")
     parser.add_argument("--input-lengths", type=int, nargs='+', required=True, help="List of input token lengths to test")
     parser.add_argument("--output-lengths", type=int, nargs='+', required=True, help="List of output token lengths to test")
     parser.add_argument("--output-dir", type=str, default="data/profiling/", help="Directory where the results will be saved")
@@ -97,7 +97,7 @@ def main():
         
         for input_length in tqdm(args.input_lengths, desc="Input Lengths", position=0):
             for output_length in tqdm(args.output_lengths, desc=f"Output Lengths (input_length={input_length})", position=1, leave=False):
-                for batch_size in tqdm(args.batch_sizes, desc=f"Batch Sizes (input_length={input_length}, output_length={output_length})", position=2, leave=False):
+                for batch_size in tqdm(args.batch_size, desc=f"Batch Sizes (input_length={input_length}, output_length={output_length})", position=2, leave=False):
                     avg_prefill, avg_decode = measure_latency(llm, tokenizer, batch_size, input_length, output_length)
                     
                     writer.writerow({

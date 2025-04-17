@@ -89,8 +89,8 @@ def main():
     decoding_energy = decoding_power * decoding_time
     monolithic_retrieval_energy = monolithic_retrieval_power * monolithic_retrieval_time
 
-    print(monolithic_retrieval_energy)
-    print(hermes_energy)
+    # print(monolithic_retrieval_energy)
+    # print(hermes_energy)
 
     num_strides = args.output_size // args.stride_length
 
@@ -102,9 +102,9 @@ def main():
     hermes_w_enhancements = (encoding_energy + decoding_energy + hermes_energy + prefill_energy) + \
                             (encoding_energy + decoding_energy + hermes_energy) * (num_strides - 1)
 
-    print("Baseline Energy:", baseline_energy)
-    print("Hermes Energy:", hermes)
-    print("Hermes Energy with Enhancements:", hermes_w_enhancements)
+    # print("Baseline Energy:", baseline_energy)
+    # print("Hermes Energy:", hermes)
+    # print("Hermes Energy with Enhancements:", hermes_w_enhancements)
 
     # --- Normalize to baseline energy ---
     bars = [

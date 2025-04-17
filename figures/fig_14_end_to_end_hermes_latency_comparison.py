@@ -63,8 +63,8 @@ def main():
                 int(row["Sample nprobe"]) == args.sample_nprobe):
                 hermes_retrieval_time = float(row["Avg Hermes Retrieval Latency (s)"])
 
-    print(monolithic_retrieval_time)
-    print(hermes_retrieval_time)
+    # print(monolithic_retrieval_time)
+    # print(hermes_retrieval_time)
 
     num_strides = args.output_size // args.stride_length
     baseline_latency = (encoding_time + prefill_time + decoding_time + monolithic_retrieval_time) * num_strides 

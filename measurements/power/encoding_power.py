@@ -62,7 +62,7 @@ def main():
     """
     parser = argparse.ArgumentParser(description="LLM Inference Power Benchmarking")
     parser.add_argument("--model-name", type=str, required=True, help="Model name to evaluate")
-    parser.add_argument("--batch-sizes", type=int, nargs='+', required=True, help="List of batch sizes for inference")
+    parser.add_argument("--batch-size", type=int, nargs='+', required=True, help="List of batch sizes for inference")
     parser.add_argument("--input-lengths", type=int, nargs='+', required=True, help="List of input token lengths to test")
     parser.add_argument("--output-dir", type=str, default="data/profiling/", help="Directory to save the results")
     
@@ -87,7 +87,7 @@ def main():
         # Outer progress bar for input lengths
         for input_length in tqdm(args.input_lengths, desc="Input Lengths", position=0):
             # Inner progress bar for batch sizes
-            for batch_size in tqdm(args.batch_sizes, desc=f"Batch Sizes (input_length={input_length})", leave=False, position=1):
+            for batch_size in tqdm(args.batch_size, desc=f"Batch Sizes (input_length={input_length})", leave=False, position=1):
                 avg_power = measure_power(model, tokenizer, batch_size, input_length, handle)
                 writer.writerow({
                     "Model Name": args.model_name,

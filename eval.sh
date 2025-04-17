@@ -27,7 +27,7 @@ python modeling/dvfs_sim.py \
     --stride-length 16 
 
 log "Evaluating Hermes Accuracy..."
-python evaluate_retrieval_accuracy.py \
+python measurements/accuracy/evaluate_retrieval_accuracy.py \
     --flat-index data/indices/flat_indices/hermes_index_flat_100k.faiss \
     --monolithic-index data/indices/monolithic_indices/hermes_index_monolithic_100k.faiss \
     --split-index-folder data/indices/split_indices \
@@ -38,7 +38,7 @@ python evaluate_retrieval_accuracy.py \
     --deep-nprobe 128 \
     --sample-nprobe 8 \
     --retrieved-docs 5 \
-    --queries triviaqa/triviaqa_encodings.npy  \
+    --queries triviaqa/triviaqa_encodings.npy
 
 log "Finished Evaluation."
 
