@@ -425,6 +425,18 @@ python modeling/dvfs_sim.py \
 ### Figures
 
 ```bash
+python figures/fig_06_rag_ttft_e2e_retrieval_overhead.py \
+    --input-size 512 \
+    --output-size 128 \
+    --stride-length 32 \
+    --batch-size 32 \
+    --monolithic-nprobe 256 \
+    --retrieved-docs 5 \
+    -monolithic-retrieval-trace data/profiling/retrieval_monolithic_latency.csv \ # File path to profiled monolithic retrieval index latency
+    --encoding-trace data/profiling/encoding_latency.csv \ # File path to profiled encoder model latency
+    --inference-trace data/profiling/inference_latency.csv # File path to profiled inference latencies
+
+
 python figures/fig_11_hermes_accuracy_comparison.py \
     --data-file data/accuracy_eval.csv \ # File path to output file produced from accuracy evaluation
     --sample-nprobe 8 \
