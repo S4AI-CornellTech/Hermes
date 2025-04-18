@@ -9,6 +9,18 @@ log() {
 log "Running Trace Generator..."
 python modeling/trace_generator.py
 
+log "Running Figure 6: RAG TTFT and E2E Retrival Overhead"
+python figures/fig_06_rag_ttft_e2e_retrieval_overhead.py \
+  --input-size 512 \
+  --output-size 128 \
+  --stride-length 32 \
+  --batch-size 32 \
+  --monolithic-nprobe 256 \
+  --retrieved-docs 5 \
+  --monolithic-retrieval-trace 100m_data/monolithic_retrieval_latency.csv \
+  --encoding-trace 100m_data/bge_large_latency.csv \
+  --inference-trace 100m_data/gemma_2_9b_latency.csv 
+
 log "Running Figure 11: Hermes Accuracy Comparison"
 python figures/fig_11_hermes_accuracy_comparison.py \
   --data-file 100m_data/hermes_100m_accuracy_analysis.csv \
