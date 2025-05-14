@@ -14,7 +14,7 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 
 <img src="images/HermesArchitecture.png" alt="Hermes" style="width:100%;">
 
-📖 **Read our full paper:** [here](https://anonymous.com)
+📖 **Read our full paper:** [here](https://michaeltshen.github.io/Files/Hermes.pdf)
 
 📈 **Explore our profiled inference and retrieval data with RAGCAT:** [here](https://s4ai-cornelltech.github.io/RAGCAT/)
 
