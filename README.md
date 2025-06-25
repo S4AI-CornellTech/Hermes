@@ -20,21 +20,12 @@ Hermes is an algorithm-system co-design framework that intelligently distributes
 
 🔗 **If you use Hermes or RAGCAT in your research, please cite us:**  
 ```
-@inproceedings{shenHermes2025,
-    author = {Shen, Michael and Umar, Muhammad and Maeng, Kiwan and Suh, G. Edward and Gupta, Udit},
-    title = {Hermes: Algorithm-System Co-design for Efficient Retrieval Augmented Generation At-Scale},
-    year = {2025},
-    isbn = {},
-    publisher = {Association for Computing Machinery},
-    address = {New York, NY, USA},
-    url = {},
-    doi = {},
-    booktitle = {Proceedings of the 52nd Annual International Symposium on Computer Architecture},
-    pages = {},
-    numpages = {},
-    keywords = {Retrieval-Augmented Generation, Information Retrieval, Large Language Models, Natural Language Processingg},
-    location = {Tokyo, Japan},
-    series = {ISCA '25}
+@inproceedings{shen2025hermes,
+  title={Hermes: Algorithm-System Co-design for Efficient Retrieval-Augmented Generation At-Scale},
+  author={Shen, Michael and Umar, Muhammad and Maeng, Kiwan and Suh, G Edward and Gupta, Udit},
+  booktitle={Proceedings of the 52nd Annual International Symposium on Computer Architecture},
+  pages={958--973},
+  year={2025}
 }
 ```
 ---
